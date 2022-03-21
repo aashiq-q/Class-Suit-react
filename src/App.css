@@ -1,38 +1,90 @@
-.App {
-  text-align: center;
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
+@import url("https://fonts.googleapis.com/css?family=Nunito:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic");
+body {
+  height: 100vh;
+  /* overflow: hidden; */
+  font-family: 'Nunito', sans-serif !important;
+  overflow-y: scroll;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body::-webkit-scrollbar{
+  width: 0;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+input,
+textarea {
+  padding: 0.6rem 1rem;
+  outline: none;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  transition: 0.2s ease;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+input:focus,
+textarea:focus {
+  border-color: rgb(102, 126, 234);
+}
+.class-card {
+  border-radius: 10px;
+  overflow: hidden;
+  width: max-content;
+  box-shadow: 0px 0px 25px -8px rgba(0, 0, 0, 0.6);
+}
+.card-head {
+  height: 80px;
+  width: 300px;
+  background-color: rgb(11, 117, 255);
+  background-color: rgb(31, 41, 55);
+  padding: 10px 15px;
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.card-head:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.class-name {
+  font-size: 20px;
+  font-weight: 400;
+}
+.class-creator {
+  font-size: 14px;
+}
+.card-profile img {
+  height: 90px;
+  width: 90px;
+  border: 4px solid white;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: -50px;
+  left: 180px;
+}
+.card-body {
+  height: 30px;
+  width: 100%;
+}
+.class-image {
+  margin: 0 auto;
+  width: 100%;
+}
+.class-image img {
+  margin: 0 auto;
+  width: 1010px;
+}
+.alert_pos{
+  position: absolute;
+  left: 50%;
+  top: -50%;
+  transform: translateX(-50%);
+  transition: 0.5s ease-in;
+}
+.show_alert{
+  top: 5%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+input:checked + div {
+  @apply border-blue-500;
+}
+input:checked + div svg {
+  @apply block;
 }
