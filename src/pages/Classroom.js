@@ -21,13 +21,22 @@ import User_Class_Component from "../component/User_Class_Component";
 const Classroom = () => {
   const navigate = useNavigate();
   const { user } = useUserAuth();
-  const { setLocationId, getCurrentDate } = useUserClass();
+  const { setLocationId, getCurrentDate, setIsAdmin, isAdmin } = useUserClass();
+  
   const [message, setMessage] = useState("");
   let { id } = useParams();
   let current_class = setLocationId(id);
+  
   let is_member = false;
   try {
     if (current_class) {
+     try {
+      if(user.email === current_class.data.creatorEmail){
+        setIsAdmin(true)
+      }
+     } catch (err) {
+       console.log(err)
+     }
       let current_data = current_class.data.members;
       for (let i = 0; i < current_data.length; i++) {
         if (current_data[i] === user.email) {
@@ -155,7 +164,7 @@ const Classroom = () => {
                 Work
               </li>
             </div>
-            <div className="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+            <div className={ isAdmin ? "block -mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer" : "hidden"}>
               <li
                 className={
                   "text-xs font-bold uppercase px-5 py-3 border-2 rounded block leading-normal " +
@@ -172,7 +181,7 @@ const Classroom = () => {
                 Members
               </li>
             </div>
-            <div className="-mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer">
+            <div className={ isAdmin ? "block -mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer" : "hidden"}>
               <li
                 className={
                   "text-xs font-bold uppercase px-5 py-3 border-2 rounded block leading-normal " +
@@ -225,7 +234,7 @@ const Classroom = () => {
                     state of the art customer service.
                   </p>
                 </div>
-                <div className={openTab === 3 ? "block" : "hidden"} id="link3">
+                <div className={openTab === 3 && isAdmin ? "block" : "hidden"} id="link3">
                   <h1 className="text-xl font-bold">Users: </h1>
                   <hr className="bg-slate-500 mb-3" />
                   {
@@ -233,6 +242,7 @@ const Classroom = () => {
                     current_class.data.members.map((user_email) => {
                       return (
                         <User_Class_Component
+                        userEmail={user.email}
                           key={user_email}
                           user={user_email}
                         />

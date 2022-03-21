@@ -8,6 +8,8 @@ import Class_Card_Container from "./component/Class_Card_Container";
 import Classroom from "./pages/Classroom";
 import Bookmark from "./component/Bookmark";
 import Invite_Class from "./pages/Invite_Class";
+import UploadFiles from "./pages/UploadFiles";
+import CreateWork from "./pages/CreateWork";
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Route path="/class" exact element={<Class_Card_Container/>} />
         <Route path="/class/:id" exact element={<Classroom/>} />
         <Route path="/invite/:id" exact element={<Invite_Class/>} />
+        <Route path="/assign" exact element={<UploadFiles/>} />
       </Routes>
       </UserClassContextProvider>
     </UserAuthContextProvider>

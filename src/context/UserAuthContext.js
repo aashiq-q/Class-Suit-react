@@ -14,7 +14,9 @@ const userAuthContext = createContext();
 export function UserAuthContextProvider({ children }) {
   const location = useLocation();
 	const navigate = useNavigate();
+
   const [user, setUser] = useState({});
+
   function logOut() {
     return signOut(auth);
   }
@@ -27,7 +29,7 @@ export function UserAuthContextProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       setUser(currentuser);
 	  if (currentuser) {
-      if (location.pathname.includes("invite")) {
+      if (location.pathname.includes("invite") || location.pathname.includes("assign")) {
         return
       }
       else{
