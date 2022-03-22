@@ -45,7 +45,7 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
       </div>
       <hr className="mb-2 bg-slate-600" />
       <p className="p-4 py-2">
-        {typeof data.data === "string" ? data.data : <p onClick={() => {navigate("/class")}} className="text-blue-600 duration-200 cursor-pointer text-base font-bold">{data.title}</p>}
+        {typeof data.data === "string" ? data.data : <a onClick={() => {navigate(`/work/${parentId}/${id}/`)}} className="text-blue-600 duration-200 cursor-pointer text-base font-bold">{data.title}</a>}
       </p>
     </div>
   );

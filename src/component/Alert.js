@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from "react";
+import { Route, useNavigate } from "react-router-dom";
 
-const Alert = ({ flag, message, messageSetter }) => {
+const Alert = ({ flag, message, messageSetter, link, linkText }) => {
   const alert_dom = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (flag) {
@@ -41,17 +43,15 @@ const Alert = ({ flag, message, messageSetter }) => {
       <div className="ml-3 text-sm font-medium text-blue-700 dark:text-blue-800">
         {message}
         <a
-          href="#"
-          className="font-semibold underline hover:text-blue-800 dark:hover:text-blue-900"
+        onClick={() => {navigate(link)}}
+          className="animate-bounce cursor-pointer font-bold underline hover:text-blue-800 dark:hover:text-blue-900"
         >
-          {/* example link */}
+          {" "}{linkText}
         </a>
-        {/* . Give it a click if you like. */}
       </div>
       <button
         type="button"
         className="ml-auto -mx-1.5 -my-1.5 bg-blue-100 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex h-8 w-8 dark:bg-blue-200 dark:text-blue-600 dark:hover:bg-blue-300"
-        // data-collapse-toggle="alert-1"
         aria-label="Close"
       >
         <span className="sr-only">Close</span>

@@ -32,6 +32,7 @@ const CreateWork = () => {
   const [message, setMessage] = useState("");
 
   const [InputFiles, setInputFiles] = useState([]);
+  const [docRefID, setdocRefID] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -59,6 +60,7 @@ const CreateWork = () => {
         user: user.displayName,
       })
         .then(async (docRef) => {
+          setdocRefID(docRef.id)
           const dataId = docRef.id;
           console.log("done");
           if (InputFiles.length === 0) {
@@ -78,8 +80,8 @@ const CreateWork = () => {
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                   setprogressPercentage(progress);
                   if (progress === 100) {
-                    call_alert("Assignment Posted Successfully!!");
                     setprogressPercentage(0);
+                    call_alert("Assignment Posted Successfully!!");
                   }
                 },
                 (error) => {
@@ -133,7 +135,7 @@ const CreateWork = () => {
 
   return (
     <>
-      <Alert message={message} flag={flag} messageSetter={setMessage} />
+      <Alert message={message} flag={flag} messageSetter={setMessage} link={`/work/${parentID}/${docRefID}`} linkText={"Click Here"} />
       <div className="relative p-6 pb-0 flex-auto">
         <label
           htmlFor="workTitle"

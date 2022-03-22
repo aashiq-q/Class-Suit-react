@@ -168,7 +168,7 @@ export default function Navbar() {
                         {({ active }) => (
                           <p
                             className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            onClick={handleSignOut}
+                            onClick={() => {logOut()}}
                           >
                             Sign Out
                           </p>

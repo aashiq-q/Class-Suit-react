@@ -26,7 +26,9 @@ const Classroom = () => {
   const [message, setMessage] = useState("");
   let { id } = useParams();
   const [current_class, setCurrent_class] = useState(setLocationId(id));
-
+  useEffect(() => {
+    setCurrent_class(setLocationId(id))
+  }, [setLocationId]);
   let is_member = false;
   try {
     if (current_class) {
@@ -253,7 +255,7 @@ const Classroom = () => {
                   <hr className="my-2 bg-slate-500" />
                   <div className="mt-4">
                     {works.map((work) => {
-                      if (work.data.type !== "assignment") return;
+                      if (work.data.type !== "assignment") return null;
                       return (
                         <Announcement_Box
                           wordID={work.id}
@@ -306,7 +308,7 @@ const Classroom = () => {
                       placeholder="Class Name"
                       autoComplete="off"
                       readOnly
-                      value={`localhost:3000/invite/${current_class.id}`}
+                      value={`class-suit.vercel.app/invite/${current_class.id}`}
                     />
 
                     <div className="py-4">

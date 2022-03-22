@@ -28,8 +28,9 @@ export function UserAuthContextProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       setUser(currentuser);
+      console.log(currentuser)
 	  if (currentuser) {
-      if (location.pathname.includes("invite")) {
+      if (location.pathname.includes("invite") || location.pathname.includes("work")) {
         return
       }
       else{
