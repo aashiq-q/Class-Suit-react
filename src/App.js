@@ -3,12 +3,10 @@ import Navbar from "./component/Navbar";
 import Login from "./pages/Login";
 import { UserAuthContextProvider } from "./context/UserAuthContext";
 import { UserClassContextProvider } from "./context/UserClassContext";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route  } from "react-router-dom";
 import Class_Card_Container from "./component/Class_Card_Container";
 import Classroom from "./pages/Classroom";
-import Bookmark from "./component/Bookmark";
 import Invite_Class from "./pages/Invite_Class";
-import UploadFiles from "./pages/UploadFiles";
 import CreateWork from "./pages/CreateWork";
 
 function App() {
@@ -23,7 +21,7 @@ function App() {
         <Route path="/class" exact element={<Class_Card_Container/>} />
         <Route path="/class/:id" exact element={<Classroom/>} />
         <Route path="/invite/:id" exact element={<Invite_Class/>} />
-        <Route path="/assign" exact element={<UploadFiles/>} />
+        <Route path="/assign/:parentID" exact element={<CreateWork/>} />
       </Routes>
       </UserClassContextProvider>
     </UserAuthContextProvider>

@@ -4,7 +4,8 @@ import { useUserClass } from "../context/UserClassContext";
 const Announcement_Component = ({
   annoucementFunc,
   current_className,
-  handle_alert
+  handle_alert,
+  isAdmin
 }) => {
   const [announcementInput, setAnnouncementInput] = useState("");
   const handleSubmit = (e) => {
@@ -24,7 +25,7 @@ const Announcement_Component = ({
     <>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-wrap items-end justify-between"
+        className={isAdmin ? "flex flex-wrap items-end justify-between" : "hidden"}
       >
         <div className="flex justify-between rounded items-center w-full p-3 border-gray-300 border-2 mb-5">
           <p className="font-medium">Classroom Code: {current_className.id}</p>

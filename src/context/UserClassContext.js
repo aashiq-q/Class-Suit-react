@@ -12,11 +12,13 @@ import {
   arrayUnion,
 } from "firebase/firestore";
 import { useUserAuth } from "./UserAuthContext";
-import useDrivePicker from "react-google-drive-picker";
 
 const userClassContext = createContext();
 
+
 export function UserClassContextProvider({ children }) {
+  const [ currentClass, setCurrentClass ] = useState("")
+  
   const { user } = useUserAuth();
   const [classes, setClasses] = useState([]);
   const q = query(
@@ -47,30 +49,6 @@ export function UserClassContextProvider({ children }) {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const [openPicker, data] = useDrivePicker();
-
-  const [fileData, setFileData] = useState([]);
-  const handleOpenPicker = () => {
-    openPicker({
-      clientId:
-        "9795694558-3mhtthqopjqa000ql2to27i07ohdmqua.apps.googleusercontent.com",
-      developerKey: "AIzaSyAHGFdPN9zrZs0rbX5M73nEyxExcd_SPGU",
-      viewId: "",
-      token:
-        "ya29.A0ARrdaM_oM_g3MYF4ynywMyUqZ-ZWyEPZQToo3TGh9nrzCju4CPKfpCPGOGW4lXB4MzgDfic68O37M_Rsk-srIIX4yeV3d1VGYkuZfFj0QqYu3CPR0rUqR3DgbzQ4xcL1paJ8KIoNYxziDQbwVQKqGc2RQkRH",
-      showUploadView: true,
-      showUploadFolders: false,
-      supportDrives: true,
-      multiselect: true,
-      disableDefaultView: true,
-    });
-  };
-
-  useEffect(() => {
-    if (data) {
-      setFileData(data.docs);
-    }
-  }, [data]);
 
   const getCurrentDate = () => {
     const date_obj = new Date();
@@ -83,6 +61,7 @@ export function UserClassContextProvider({ children }) {
 
   const setLocationId = (id) => {
     let finalClass = {};
+    setCurrentClass(id)
     for (let i = 0; i < classes.length; i++) {
       if (classes[i].id === id) {
         finalClass = classes[i];
@@ -122,8 +101,7 @@ export function UserClassContextProvider({ children }) {
         join_class_with_code,
         setIsAdmin,
         isAdmin,
-        handleOpenPicker,
-        fileData,
+        currentClass
       }}
     >
       {children}

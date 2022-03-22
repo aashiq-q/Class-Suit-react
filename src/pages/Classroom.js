@@ -22,33 +22,32 @@ const Classroom = () => {
   const navigate = useNavigate();
   const { user } = useUserAuth();
   const { setLocationId, getCurrentDate, setIsAdmin, isAdmin } = useUserClass();
-  
+
   const [message, setMessage] = useState("");
   let { id } = useParams();
-  let current_class = setLocationId(id);
-  
+  const [current_class, setCurrent_class] = useState(setLocationId(id));
+
   let is_member = false;
   try {
     if (current_class) {
-     try {
-      if(user.email === current_class.data.creatorEmail){
-        setIsAdmin(true)
+      try {
+        if (user.email === current_class.data.creatorEmail) {
+          setIsAdmin(true);
+        }
+      } catch (err) {
+        console.log(err);
       }
-     } catch (err) {
-       console.log(err)
-     }
       let current_data = current_class.data.members;
       for (let i = 0; i < current_data.length; i++) {
         if (current_data[i] === user.email) {
           is_member = true;
         }
       }
-    }
-    else{
-      navigate('/class')
+    } else {
+      navigate("/class");
     }
   } catch (error) {
-    navigate('/class')
+    navigate("/class");
   }
 
   useEffect(() => {
@@ -164,7 +163,13 @@ const Classroom = () => {
                 Work
               </li>
             </div>
-            <div className={ isAdmin ? "block -mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer" : "hidden"}>
+            <div
+              className={
+                isAdmin
+                  ? "block -mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer"
+                  : "hidden"
+              }
+            >
               <li
                 className={
                   "text-xs font-bold uppercase px-5 py-3 border-2 rounded block leading-normal " +
@@ -181,7 +186,13 @@ const Classroom = () => {
                 Members
               </li>
             </div>
-            <div className={ isAdmin ? "block -mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer" : "hidden"}>
+            <div
+              className={
+                isAdmin
+                  ? "block -mb-px mr-2 last:mr-0 flex-auto text-center cursor-pointer"
+                  : "hidden"
+              }
+            >
               <li
                 className={
                   "text-xs font-bold uppercase px-5 py-3 border-2 rounded block leading-normal " +
@@ -205,6 +216,7 @@ const Classroom = () => {
               <div className="tab-content tab-space">
                 <div className={openTab === 1 ? "block" : "hidden"} id="link1">
                   <Announcement_Component
+                    isAdmin={isAdmin}
                     handle_alert={call_alert}
                     current_className={current_class}
                     annoucementFunc={sendAnnoucement}
@@ -216,6 +228,7 @@ const Classroom = () => {
                   {works.map((work) => {
                     return (
                       <Announcement_Box
+                      parentId={id}
                         deleteFunc={deleteAnnouncement}
                         work={work}
                         key={work.data.timestamp}
@@ -224,31 +237,50 @@ const Classroom = () => {
                   })}
                 </div>
                 <div className={openTab === 2 ? "block" : "hidden"} id="link2">
-                  <p>
-                    Completely synergize resource taxing relationships via
-                    premier niche markets. Professionally cultivate one-to-one
-                    customer service with robust ideas.
-                    <br />
-                    <br />
-                    Dynamically innovate resource-leveling customer service for
-                    state of the art customer service.
-                  </p>
+                  <button
+                    className={
+                      openTab === 2 && isAdmin
+                        ? "bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
+                        : "hidden"
+                    }
+                    type="button"
+                    onClick={() => {
+                      navigate(`/assign/${id}`);
+                    }}
+                  >
+                    Assign Work
+                  </button>
+                  <hr className="my-2 bg-slate-500" />
+                  <div className="mt-4">
+                    {works.map((work) => {
+                      if (work.data.type !== "assignment") return;
+                      return (
+                        <Announcement_Box
+                          wordID={work.id}
+                          deleteFunc={deleteAnnouncement}
+                          work={work}
+                          key={work.data.timestamp}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className={openTab === 3 && isAdmin ? "block" : "hidden"} id="link3">
+                <div
+                  className={openTab === 3 && isAdmin ? "block" : "hidden"}
+                  id="link3"
+                >
                   <h1 className="text-xl font-bold">Users: </h1>
                   <hr className="bg-slate-500 mb-3" />
-                  {
-                   is_member &&
+                  {is_member &&
                     current_class.data.members.map((user_email) => {
                       return (
                         <User_Class_Component
-                        userEmail={user.email}
+                          userEmail={user.email}
                           key={user_email}
                           user={user_email}
                         />
                       );
-                    })
-                  }
+                    })}
                 </div>
                 <div className={openTab === 4 ? "block" : "hidden"} id="link4">
                   <h1 className="text-xl font-bold">Settings: </h1>

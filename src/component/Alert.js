@@ -9,9 +9,9 @@ const Alert = ({ flag, message, messageSetter }) => {
         alert_dom.current.classList.add("show_alert");
         const timeOut = setTimeout(() => {
           alert_dom.current.classList.remove("show_alert");
-		  messageSetter("")
+          messageSetter("");
           clearTimeout(timeOut);
-        }, 2000);
+        }, 3000);
       };
       return () => {
         animate_alert();

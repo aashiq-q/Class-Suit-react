@@ -1,6 +1,6 @@
-const { google } = require('googleapis');
+import { google } from 'googleapis';
 // const path = require('path');
-// const fs = require('fs');
+// import fs from 'fs';
 
 const CLIENT_ID = 'YOUR CLIENT ID';
 const CLIENT_SECRET = 'YOUR CLIENT SECRET';
@@ -89,4 +89,4 @@ async function generatePublicUrl() {
 
 // generatePublicUrl();
 
-module.exports = { generatePublicUrl, deleteFile, uploadFile, }
+export { generatePublicUrl, deleteFile, uploadFile, }

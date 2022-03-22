@@ -29,7 +29,7 @@ export function UserAuthContextProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       setUser(currentuser);
 	  if (currentuser) {
-      if (location.pathname.includes("invite") || location.pathname.includes("assign")) {
+      if (location.pathname.includes("invite")) {
         return
       }
       else{
