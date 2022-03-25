@@ -5,7 +5,7 @@ import { GiBrain } from "react-icons/gi";
 
 const Bookmark = () => {
   const [isClosed, setIsClosed] = useState(true);
-  const handleClick = () => {
+  const handleBookmark = () => {
     isClosed ? setIsClosed(false) : setIsClosed(true);
   };
   let default_bookmarks = [
@@ -21,7 +21,8 @@ const Bookmark = () => {
         title="Bookmarks"
         className="right-3 md:right-9 bottom-9 bg-white duration-300 shadow-lg fixed flex justify-center flex-col-reverse items-center rounded-full border-2 p-3 md:scale-125 cursor-pointer"
       >
-        <div onClick={handleClick}>
+        <div onClick={handleBookmark}>
+          {/* <input type="checkbox" id="isClosed" checked={isClosed} className="hidden"/> */}
           <BsBookmarkPlus />
         </div>
         <div
