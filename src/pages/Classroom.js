@@ -322,6 +322,12 @@ const Classroom = () => {
                       value={editClassName}
                       onChange={handleClassNameChange}
                     />
+                    <label
+                      htmlFor="inviteLink"
+                      className="block text-base font-medium text-gray-700 mb-2"
+                    >
+                      Invite Link:
+                    </label>
                     <input
                       id="inviteLink"
                       className="rounded-md w-full mb-4 cursor-pointer"

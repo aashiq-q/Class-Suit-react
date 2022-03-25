@@ -18,9 +18,6 @@ export default function Navbar() {
   };
   const [show_menu, set_show_menu] = useState(true);
   const location = useLocation();
-  // if (location.pathname === "/") {
-  //   set_show_menu(false);
-  // }
 
   const [create_class_name, setCreate_class_name] = useState();
   const [join_class_id, setJoin_class_id] = useState();
@@ -87,10 +84,7 @@ export default function Navbar() {
 
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Profile dropdown */}
-                <Menu
-                  as="div"
-                  className={show_menu ? "block ml-2 relative" : "hidden"}
-                >
+                <Menu as="div" className="block ml-2 relative">
                   <div>
                     <Menu.Button className="bg-gray-800 flex text-sm rounded focus:outline-none  focus:border-slate-300">
                       <span className="sr-only">Open user menu</span>
@@ -132,7 +126,11 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <p
-                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                            className={
+                              show_menu
+                                ? "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                : "hidden"
+                            }
                             // onClick={handleSignOut}
                           >
                             Leave Class
@@ -168,7 +166,9 @@ export default function Navbar() {
                         {({ active }) => (
                           <p
                             className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            onClick={() => {logOut()}}
+                            onClick={() => {
+                              logOut();
+                            }}
                           >
                             Sign Out
                           </p>

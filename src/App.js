@@ -11,7 +11,6 @@ import CreateWork from "./pages/CreateWork";
 import Alert from "./component/Alert";
 import React, { useState } from "react";
 import ViewAssignment from "./pages/ViewAssignment";
-import LoadingScreen from "./component/LoadingScreen";
 import Submissions from "./pages/Submissions";
 import QuizMain from "./pages/QuizMain";
 import Bookmark from "./component/Bookmark";
@@ -39,7 +38,7 @@ function App() {
         <Navbar />
         <Alert message={message} flag={flag} messageSetter={setMessage} />
         <Bookmark />
-        
+
         <Routes>
           <Route path="/" exact element={<Login />} />
           <Route path="/class" exact element={<Class_Card_Container />} />
