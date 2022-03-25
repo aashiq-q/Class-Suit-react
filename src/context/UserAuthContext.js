@@ -30,7 +30,7 @@ export function UserAuthContextProvider({ children }) {
       setUser(currentuser);
       console.log(currentuser)
 	  if (currentuser) {
-      if (location.pathname.includes("invite") || location.pathname.includes("work")) {
+      if (location.pathname.includes("invite") || location.pathname.includes("work") || location.pathname.includes("quiz")) {
         return
       }
       else{

@@ -19,7 +19,7 @@ const User_Class_Component = ({ user, userEmail }) => {
   }, [user]);
   return (
     <div className="p-2 rounded-md border-2 flex justify-between items-center mb-2">
-      <div className="p-2">{user}</div>
+      <div className="p-2 overflow-hidden text-ellipsis whitespace-nowrap">{user}</div>
       <i
         className={!isSame ? "bi bi-trash3-fill cursor-pointer mr-2" : "hidden"}
         onClick={handleClick}

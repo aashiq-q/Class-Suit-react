@@ -8,6 +8,7 @@ import {
   query,
   orderBy,
   deleteDoc,
+  updateDoc,
   doc,
 } from "firebase/firestore";
 import { useNavigate, useParams } from "react-router-dom";
@@ -51,7 +52,7 @@ const Classroom = () => {
   } catch (error) {
     navigate("/class");
   }
-
+  const [editClassName, setEditClassName] = useState(current_class.data.class_name)
   useEffect(() => {
     if (!is_member) {
       navigate("/class");
@@ -81,6 +82,11 @@ const Classroom = () => {
     };
   }, [user]);
 
+  const copyInviteLink = (e) => {
+    navigator.clipboard.writeText(e.target.value);
+    call_alert("Invite Link Copied!!")
+  };
+
   const deleteAnnouncement = async (
     delete_doc_id,
     annoucemnent_creator,
@@ -94,7 +100,15 @@ const Classroom = () => {
       call_alert("Announcement Deleted!");
     }
   };
-  const updateDoc = () => {};
+  const updateDocumnentDetails = async () => {
+    const docRef = doc(db, "classes", `${id}`);
+    await updateDoc(docRef, {
+      class_name: editClassName
+    })
+    .then(() => {
+      call_alert("Settings Updated!!")
+    })
+  };
 
   const sendAnnoucement = async (message) => {
     if (message === "") {
@@ -121,6 +135,10 @@ const Classroom = () => {
       clearTimeout(timeout);
     }, 10);
   };
+
+  const handleClassNameChange = (e) => {
+    setEditClassName(e.target.value)
+  }
 
   return (
     <>
@@ -301,14 +319,18 @@ const Classroom = () => {
                       placeholder="Class Name"
                       autoComplete="off"
                       defaultValue={is_member && current_class.data.class_name}
+                      value={editClassName}
+                      onChange={handleClassNameChange}
                     />
                     <input
                       id="inviteLink"
-                      className="rounded-md w-full mb-4"
+                      className="rounded-md w-full mb-4 cursor-pointer"
                       placeholder="Class Name"
                       autoComplete="off"
                       readOnly
-                      value={`class-suit.vercel.app/invite/${current_class.id}`}
+                      onFocus={copyInviteLink}
+                      onClick={copyInviteLink}
+                      value={`https://class-suit.vercel.app/invite/${current_class.id}`}
                     />
 
                     <div className="py-4">
@@ -349,6 +371,7 @@ const Classroom = () => {
                     <button
                       className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
                       type="button"
+                      onClick={updateDocumnentDetails}
                     >
                       Update
                     </button>
