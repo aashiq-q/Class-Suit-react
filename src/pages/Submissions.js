@@ -31,10 +31,12 @@ const Submissions = () => {
   }, []);
   return (
     <div>
+    <h1 className="text-2xl text-center underline-offset-2 underline font-bold my-5">Submissions</h1>
+
       {submission &&
         submission.map((submissionData) => {
           return (
-			  <Accordian/>
+            <Accordian data={submissionData}/>
 		  )
         })}
     </div>

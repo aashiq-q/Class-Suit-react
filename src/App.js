@@ -9,7 +9,7 @@ import Classroom from "./pages/Classroom";
 import Invite_Class from "./pages/Invite_Class";
 import CreateWork from "./pages/CreateWork";
 import Alert from "./component/Alert";
-import { useState } from "react";
+import React, { useState } from "react";
 import ViewAssignment from "./pages/ViewAssignment";
 import LoadingScreen from "./component/LoadingScreen";
 import Submissions from "./pages/Submissions";

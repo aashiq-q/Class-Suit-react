@@ -1,22 +1,26 @@
 import React, { useState } from "react";
-import { FaChevronDown } from "react-icons/fa"
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"
+import FileNameDisplay from "../component/FileNameDisplay"
 
-const Accordian = () => {
+const Accordian = ({ data }) => {
+  console.log(data)
   const [isShown, setIsShown] = useState(false);
   const handleAccordian = () => {
     isShown ? setIsShown(false) : setIsShown(true)
   }
   return (
     <>
-      <div className="w-3/4 m-auto my-4 rounded-lg overflow-hidden">
-        <div className="border-2 p-3 rounded-t-lg"  onClick={handleAccordian}>
-          <p className="font-bold">Accordian heading</p>
-          <FaChevronDown/>
+      <div className="w-3/4 m-auto my-4 rounded-lg overflow-hidden duration-200">
+        <div className={isShown ? "cursor-pointer border-2 p-3 rounded-t-lg flex justify-between items-center" : "flex justify-between items-center rounded-t-lg rounded-b-lg cursor-pointer border-2 p-3"}  onClick={handleAccordian}>
+          <p className="font-extrabold text-blue-600">{data.email} ({data.user})</p>
+          { !isShown ? <FaChevronDown/> : <FaChevronUp/>}
         </div>
         <div className={isShown ? "duration-300 border-2 p-3 border-t-0 rounded-lg rounded-t-none overflow-hidden" : "accordian_hidden"}>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum nam expedita sequi, explicabo sunt ipsa doloribus eligendi non error quibusdam eum facilis beatae deserunt repellendus ut vel nostrum, quasi autem!
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda facilis quo saepe ea iure molestiae, aperiam a minima molestias similique magnam eligendi explicabo minus expedita deserunt provident vel suscipit eveniet!
-          </p>
+            {
+              data.regions.map(files => {
+                return <FileNameDisplay file={{name: files.filename, url: files.url}}/>
+              })
+            }
         </div>
       </div>
     </>
