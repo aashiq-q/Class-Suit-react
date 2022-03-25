@@ -9,7 +9,7 @@ import {
   serverTimestamp,
   updateDoc,
   doc,
-  arrayUnion
+  arrayUnion,
 } from "firebase/firestore";
 import {
   ref,
@@ -60,7 +60,7 @@ const CreateWork = () => {
         user: user.displayName,
       })
         .then(async (docRef) => {
-          setdocRefID(docRef.id)
+          setdocRefID(docRef.id);
           const dataId = docRef.id;
           console.log("done");
           if (InputFiles.length === 0) {
@@ -88,7 +88,8 @@ const CreateWork = () => {
                   console.log(error);
                 },
                 () => {
-                  getDownloadURL(uploadTask.snapshot.ref).then( async (downloadURL) => {
+                  getDownloadURL(uploadTask.snapshot.ref).then(
+                    async (downloadURL) => {
                       const documentRef = doc(
                         db,
                         "classes",
@@ -97,14 +98,14 @@ const CreateWork = () => {
                         `${dataId}`
                       );
                       await updateDoc(documentRef, {
-                        regions: arrayUnion( {
+                        regions: arrayUnion({
                           filename: fileName,
                           url: downloadURL,
                           path: path,
                         }),
                       })
                         .then(() => {
-                          console.log("first");
+                          navigate(`/class/${parentID}/${docRefID}`)
                         })
                         .catch((err) => {
                           console.log(err);
@@ -135,77 +136,85 @@ const CreateWork = () => {
 
   return (
     <>
-      <Alert message={message} flag={flag} messageSetter={setMessage} link={`/work/${parentID}/${docRefID}`} linkText={"Click Here"} />
-      <div className="relative p-6 pb-0 flex-auto">
-        <label
-          htmlFor="workTitle"
-          className="block text-base font-medium text-gray-700 mb-2"
-        >
-          Title:
-        </label>
-        <input
-          id="workTitle"
-          className="rounded-md w-full mb-4"
-          placeholder="Title"
-          autoComplete="off"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div className="relative p-6 py-0 flex-auto">
-        <label
-          htmlFor="workDescription"
-          className="block text-base font-medium text-gray-700 mb-2"
-        >
-          Description:
-        </label>
-        <input
-          id="workDescription"
-          className="rounded-md w-full mb-4"
-          placeholder="Description"
-          autoComplete="off"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <div className="relative p-6 py-0 flex-auto">
-        <label
-          htmlFor="files"
-          className="block text-base font-medium text-gray-700 mb-2"
-        >
-          Files :
-        </label>
-        <input
-          id="files"
-          type="file"
-          multiple
-          onChange={handleFileInputChange}
-          className="rounded-md w-full mb-4"
-          autoComplete="off"
-        />
-      </div>
+      <Alert
+        message={message}
+        flag={flag}
+        messageSetter={setMessage}
+        link={`/work/${parentID}/${docRefID}`}
+        linkText={"Click Here"}
+      />
+      <div className="md:w-10/12 m-auto">
+        <div className="relative p-6 pb-0 flex-auto">
+          <label
+            htmlFor="workTitle"
+            className="block text-base font-medium text-gray-700 mb-2"
+          >
+            Title:
+          </label>
+          <input
+            id="workTitle"
+            className="rounded-md w-full mb-4"
+            placeholder="Title"
+            autoComplete="off"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="relative p-6 py-0 flex-auto">
+          <label
+            htmlFor="workDescription"
+            className="block text-base font-medium text-gray-700 mb-2"
+          >
+            Description:
+          </label>
+          <input
+            id="workDescription"
+            className="rounded-md w-full mb-4"
+            placeholder="Description"
+            autoComplete="off"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="relative p-6 py-0 flex-auto">
+          <label
+            htmlFor="files"
+            className="block text-base font-medium text-gray-700 mb-2"
+          >
+            Files :
+          </label>
+          <input
+            id="files"
+            type="file"
+            multiple
+            onChange={handleFileInputChange}
+            className="rounded-md w-full mb-4"
+            autoComplete="off"
+          />
+        </div>
 
-      <div className="px-4 flex flex-wrap">
-        {InputFiles &&
-          InputFiles.map((fileData) => {
-            return (
-              <FileNameDisplay key={fileData.lastModified} file={fileData} />
-            );
-          })}
-        {progressPercentage === 0 ? (
-          ""
-        ) : (
-          <ProgressBar progressPercentage={progressPercentage} />
-        )}
-      </div>
-      <div className="flex px-4 mt-4">
-        <button
-          className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
-          type="button"
-          onClick={postAssignment}
-        >
-          Post Assignment
-        </button>
+        <div className="px-4 flex flex-wrap">
+          {InputFiles &&
+            InputFiles.map((fileData) => {
+              return (
+                <FileNameDisplay key={fileData.lastModified} file={fileData} />
+              );
+            })}
+          {progressPercentage === 0 ? (
+            ""
+          ) : (
+            <ProgressBar progressPercentage={progressPercentage} />
+          )}
+        </div>
+        <div className="flex px-4 mt-4">
+          <button
+            className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
+            type="button"
+            onClick={postAssignment}
+          >
+            Post Assignment
+          </button>
+        </div>
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FileNameDisplay from "../component/FileNameDisplay";
 import LoadingScreen from "../component/LoadingScreen";
 import {
@@ -22,23 +22,43 @@ import {
   getDownloadURL,
   uploadBytesResumable,
 } from "firebase/storage";
+import Alert from "../component/Alert";
 
 const ViewAssignment = () => {
+  const navigate = useNavigate();
   const storage = getStorage();
   const { parentID, workID } = useParams();
   const [isLoading, setisLoading] = useState(true);
 
+  const [message, setMessage] = useState("");
+  const [flag, setflag] = useState(false);
+
   const [inputfiles, setInputFiles] = useState();
-  const [submittedData, setSubmittedData] = useState();
+  const [submittedData, setSubmittedData] = useState(null);
 
   const { user } = useUserAuth();
-  const { getCurrentDate } = useUserClass();
-
+  const { getCurrentDate, isAdmin, setIsAdmin, setLocationId } = useUserClass();
+  const [current_class, setCurrent_class] = useState(setLocationId(parentID));
+  useEffect(() => {
+    setCurrent_class(setLocationId(parentID));
+    if (current_class && current_class.data.creatorEmail === user.email) {
+      setIsAdmin(true)
+    }
+  }, []);
   useEffect(() => {
     setTimeout(() => {
       setisLoading(false);
     }, 4000);
   }, []);
+
+  const call_alert = (content) => {
+    setflag(true);
+    setMessage(content);
+    const timeout = setTimeout(() => {
+      setflag(false);
+      clearTimeout(timeout);
+    }, 10);
+  };
 
   const [data, setData] = useState();
   const [submitString, setSubmitString] = useState("Submit");
@@ -60,32 +80,45 @@ const ViewAssignment = () => {
     };
   }, []);
   useEffect(() => {
-    const unsub1 = onSnapshot(
-      doc(
-        db,
-        "classes",
-        `${parentID}`,
-        "work",
-        `${workID}`,
-        `submissions`,
-        `${user.email}`
-      ),
-      (doc) => {
-        const docData = {
-          id: doc.id,
-          docData: doc.data(),
-        };
-        console.log(docData)
-        setSubmittedData(docData);
-        if (docData.docData !== undefined) {
-          setSubmitString("Already Submitted")
+    if (user) {
+      const unsub1 = onSnapshot(
+        doc(
+          db,
+          "classes",
+          `${parentID}`,
+          "work",
+          `${workID}`,
+          `submissions`,
+          `${user.email}`
+        ),
+        (doc) => {
+          const docData = {
+            id: doc.id,
+            docData: doc.data(),
+          };
+          console.log(docData);
+
+          if (docData.docData !== undefined && docData.docData.dataUploaded) {
+            console.log(docData);
+            setSubmittedData(docData);
+            setSubmitString("Already Submitted");
+            call_alert(
+              `Hey!! ${user.displayName}, You Have Already Submitted the assignment`
+            );
+          } else {
+            setSubmittedData(null);
+          }
         }
-      }
-    );
-    return () => {
-      unsub1();
-    };
-  }, []);
+      );
+      return () => {
+        unsub1();
+      };
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log(submittedData);
+  }, [submittedData]);
 
   const handleFileChange = (e) => {
     let files = e.target.files;
@@ -94,11 +127,7 @@ const ViewAssignment = () => {
       arr.push(files[i]);
     }
     setInputFiles(arr);
-    console.log(arr.length);
   };
-  useEffect(() => {
-    console.log(inputfiles);
-  }, [inputfiles]);
 
   const handleUpload = async () => {
     setSubmitString("Uploading...");
@@ -117,6 +146,7 @@ const ViewAssignment = () => {
         email: user.email,
         timestamp: serverTimestamp(),
         user: user.displayName,
+        dataUploaded: false,
       }
     ).then(async () => {
       inputfiles.forEach((inputFile) => {
@@ -150,15 +180,20 @@ const ViewAssignment = () => {
                   "submissions",
                   `${user.email}`
                 );
-                await updateDoc(documentRef, {
-                  regions: arrayUnion({
-                    filename: fileName,
-                    url: downloadURL,
-                    path: path,
-                  }),
-                })
+                await setDoc(
+                  documentRef,
+                  {
+                    regions: arrayUnion({
+                      filename: fileName,
+                      url: downloadURL,
+                      path: path,
+                    }),
+                    dataUploaded: true,
+                  },
+                  { merge: true }
+                )
                   .then(() => {
-                    console.log("first");
+                    call_alert("Assignment Submitted Successfully!");
                   })
                   .catch((err) => {
                     console.log(err);
@@ -174,9 +209,20 @@ const ViewAssignment = () => {
   const [progressPercentage, setprogressPercentage] = useState(0);
   return (
     <>
+      <Alert messageSetter={setMessage} message={message} flag={flag} />
       {isLoading ? <LoadingScreen /> : null}
       <div className="flex flex-col w-3/4 m-auto mt-5">
-        <p className="font-bold text-3xl">{data && data.docData.title}</p>
+        <p className="font-bold text-3xl">
+          {data && data.docData.title}
+          <a
+            className={isAdmin ? "block text-base text-blue-500 cursor-pointer" : "hidden"}
+            onClick={() => {
+              navigate(`/submissions/${parentID}/${workID}`);
+            }}
+          >
+            (Submissions)
+          </a>
+        </p>
         <p className="font-semibold mt-3 text-slate-400 text-base">
           {data && data.docData.description}
         </p>
@@ -210,25 +256,24 @@ const ViewAssignment = () => {
         </div>
         <div className="flex flex-wrap">
           {inputfiles &&
-              inputfiles.map((file) => {
-                return (
-                  <FileNameDisplay
-                    key={file.lastModifiedDate}
-                    file={{ name: file.name }}
-                  />
-                );
-              })}
-             {/* {submittedData &&
-              submittedData.docData.regions.map((files) => {
-                console.log(submittedData.docData)
-                console.log(files);
-                return (
-                  <FileNameDisplay
-                    key={files.url}
-                    file={{ name: files.filename, url: files.url }}
-                  />
-                );
-              })} */}
+            inputfiles.map((file) => {
+              return (
+                <FileNameDisplay
+                  key={file.lastModifiedDate}
+                  file={{ name: file.name }}
+                />
+              );
+            })}
+          {submittedData &&
+            submittedData.docData.regions.map((files) => {
+              console.log(submittedData.docData);
+              return (
+                <FileNameDisplay
+                  key={files.url}
+                  file={{ name: files.filename, url: files.url }}
+                />
+              );
+            })}
         </div>
         {progressPercentage === 0 ? (
           ""

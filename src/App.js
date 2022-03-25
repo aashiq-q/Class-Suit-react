@@ -12,6 +12,7 @@ import Alert from "./component/Alert";
 import { useState } from "react";
 import ViewAssignment from "./pages/ViewAssignment";
 import LoadingScreen from "./component/LoadingScreen";
+import Submissions from "./pages/Submissions";
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
         <Route path="/invite/:id" exact element={<Invite_Class/>} />
         <Route path="/assign/:parentID" exact element={<CreateWork/>} />
         <Route path="/work/:parentID/:workID" exact element={<ViewAssignment/>} />
+        <Route path="/submissions/:parentID/:workID" exact element={<Submissions/>} />
       </Routes>
       </UserClassContextProvider>
     </UserAuthContextProvider>
