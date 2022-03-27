@@ -30,12 +30,13 @@ const Classroom = () => {
     data: {
       creatorEmail: "test@gmail.com",
       members: ["test@gmail.com"],
+      class_name: "Loading..."
     },
   };
   const [members, setMembers] = useState(testData.data.members);
   const [current_class, setCurrent_class] = useState(testData);
   const [editClassName, setEditClassName] = useState("");
-  document.title = `Class-Suit | ${current_class.data.class_name}`
+  document.title = `Class-Suit | Class`
 
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FaEllipsisV } from "react-icons/fa"
@@ -6,9 +6,10 @@ import { db } from "../firebase_config";
 import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 import { useUserAuth } from "../context/UserAuthContext";
 
-const Class_Card = ({ data, id }) => {
+const Class_Card = ({ data, id, creator }) => {
   const  { user } = useUserAuth();
   let path = `/class/${id}`;
+  const [isAdmin, setIsAdmin] = useState(user.email === creator)
   const handleUnenrollClick = () => {
     setModal(true)
   }
@@ -18,8 +19,10 @@ const Class_Card = ({ data, id }) => {
     await updateDoc(removalRef, {
       members: arrayRemove(user.email)
   });
-  
   }
+  useEffect(() => {
+    setIsAdmin(user.email === creator)
+  }, [user]);
   return (
     <>
     <div>
@@ -27,7 +30,7 @@ const Class_Card = ({ data, id }) => {
         <div className="card-head">
           <div className="flex justify-between relative">
             <Link to={path} className="class-name overflow-hidden text-ellipsis whitespace-nowrap w-4/6">{data.class_name}</Link>
-            <Disclosure as="div" className="absolute right-3 top-2 scale-110 z-40">
+            <Disclosure as="div" className={!isAdmin ? "absolute right-3 top-2 scale-110 z-40" : "hidden"}>
               <Menu as="div" className="ml-3 relative">
                 <div>
                   <Menu.Button className="bg-gray-800 absolute flex text-sm rounded-full">

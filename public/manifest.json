@@ -3,7 +3,7 @@
   "name": "Class-Suit",
   "icons": [
     {
-      "src": "./mobile.png",
+      "src": "./favicon.png",
       "sizes": "1024x1024",
       "type": "image/png"
     }

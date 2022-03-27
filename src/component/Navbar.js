@@ -70,13 +70,13 @@ export default function Navbar() {
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
                   <img
-                    className="block lg:hidden h-8 w-auto"
-                    src="/mobile.png"
+                    className="block lg:hidden h-10 w-auto"
+                    src="/logoSVG.svg"
                     alt="Workflow"
                   />
                   <img
                     className="hidden lg:block h-8 w-auto"
-                    src="/desktop.png"
+                    src="/logo.svg"
                     alt="Workflow"
                   />
                 </div>
