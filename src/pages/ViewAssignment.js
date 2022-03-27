@@ -151,7 +151,7 @@ const ViewAssignment = () => {
     ).then(async () => {
       inputfiles.forEach((inputFile) => {
         const fileName = inputFile.name;
-        const path = `${parentID}/${workID}/Submissions/${user.email}}/${fileName}`;
+        const path = `${parentID}/${workID}/Submissions/${user.email}/${fileName}`;
         const storageRef = ref(storage, path);
         const uploadTask = uploadBytesResumable(storageRef, inputFile);
         uploadTask.on(
@@ -212,15 +212,15 @@ const ViewAssignment = () => {
       <Alert messageSetter={setMessage} message={message} flag={flag} />
       {isLoading ? <LoadingScreen /> : null}
       <div className="flex flex-col w-3/4 m-auto mt-5">
-        <p className="font-bold text-3xl">
+        <p className="flex justify-between items-center font-bold text-3xl">
           {data && data.docData.title}
           <a
-            className={isAdmin ? "block text-base text-blue-500 cursor-pointer" : "hidden"}
+            className={isAdmin ? "cursor-pointer bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2" : "hidden"}
             onClick={() => {
               navigate(`/submissions/${parentID}/${workID}`);
             }}
           >
-            (Submissions)
+            Submissions
           </a>
         </p>
         <p className="font-semibold mt-3 text-slate-400 text-base">
@@ -238,7 +238,7 @@ const ViewAssignment = () => {
             })}
         </div>
         <hr className="my-4 bg-slate-700" />
-        <div className="relative py-0 flex-auto">
+        <div className="relative py-0 flex-auto mx-2">
           <label
             htmlFor="filesWork"
             className="block text-base font-medium text-gray-700 mb-2"
@@ -255,11 +255,11 @@ const ViewAssignment = () => {
           />
         </div>
         <div className="flex flex-wrap">
-          {inputfiles &&
+          {!submittedData && inputfiles &&
             inputfiles.map((file) => {
               return (
                 <FileNameDisplay
-                  key={file.lastModifiedDate}
+                  key={file.name}
                   file={{ name: file.name }}
                 />
               );

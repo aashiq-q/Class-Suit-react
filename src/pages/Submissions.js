@@ -36,7 +36,7 @@ const Submissions = () => {
       {submission &&
         submission.map((submissionData) => {
           return (
-            <Accordian data={submissionData}/>
+            <Accordian key={submissionData.timestamp} data={submissionData}/>
 		  )
         })}
     </div>
