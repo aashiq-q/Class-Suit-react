@@ -28,7 +28,7 @@ const Announcement_Component = ({
         className={isAdmin ? "flex flex-wrap items-end justify-between" : "hidden"}
       >
         <div className="flex justify-between rounded items-center w-full p-3 border-gray-300 border-2 mb-5">
-          <p className="font-medium">Classroom Code: {current_className.id}</p>
+          <p className="font-medium">Classroom Code: {current_className && current_className.id}</p>
           <button
             className="bg-blue-500 text-white active:bg-blue-700 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button"

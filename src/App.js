@@ -40,8 +40,8 @@ function App() {
         <Bookmark />
 
         <Routes>
-          <Route path="/" exact element={<Login />} />
-          <Route path="/class" exact element={<Class_Card_Container />} />
+          <Route path="/login" exact element={<Login />} />
+          <Route path="/" exact element={<Class_Card_Container />} />
           <Route path="/class/:id" exact element={<Classroom />} />
           <Route path="/invite/:id" exact element={<Invite_Class />} />
           <Route path="/assign/:parentID" exact element={<CreateWork />} />

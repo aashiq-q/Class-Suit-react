@@ -10,6 +10,7 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  orderBy
 } from "firebase/firestore";
 import { useUserAuth } from "./UserAuthContext";
 
@@ -21,11 +22,11 @@ export function UserClassContextProvider({ children }) {
   
   const { user } = useUserAuth();
   const [classes, setClasses] = useState([]);
-  const q = query(
-    collection(db, "classes"),
-    where("members", "array-contains", `${user && user.email}`)
-  );
   useEffect(() => {
+    const q = query(
+      collection(db, "classes"),
+      where("members", "array-contains", `${user && user.email}`)
+    );
     try {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         let arr = [];
@@ -45,7 +46,7 @@ export function UserClassContextProvider({ children }) {
     } catch (error) {
       console.log(error);
     }
-  }, [user]);
+  }, []);
 
   const [isAdmin, setIsAdmin] = useState(false);
 

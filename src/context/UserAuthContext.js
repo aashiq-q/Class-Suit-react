@@ -1,19 +1,18 @@
-import React,{ createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
   onAuthStateChanged,
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../firebase_config";
-
 
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const location = useLocation();
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [user, setUser] = useState({});
 
@@ -28,18 +27,17 @@ export function UserAuthContextProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       setUser(currentuser);
-      console.log(currentuser)
-	  if (currentuser) {
-      if (location.pathname.includes("invite") || location.pathname.includes("work") || location.pathname.includes("quiz")) {
-        return
-      }
-      else{
-        navigate('/class');
-      }
-	  }
-	  else{
-		  navigate('/')
-	  }
+      console.log(currentuser);
+      // if (currentuser) {
+      //   // location.pathname.includes("invite") || location.pathname.includes("work") || location.pathname.includes("quiz")
+      //   // if (true) {
+      //   //   return;
+      //   // } else {
+      //   //   navigate("/class");
+      //   // }
+      // } else {
+      //   navigate("/");
+      // }
     });
 
     return () => {
@@ -48,9 +46,7 @@ export function UserAuthContextProvider({ children }) {
   }, []);
 
   return (
-    <userAuthContext.Provider
-      value={{ user, logOut, googleSignIn }}
-    >
+    <userAuthContext.Provider value={{ user, logOut, googleSignIn }}>
       {children}
     </userAuthContext.Provider>
   );

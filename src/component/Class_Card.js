@@ -2,15 +2,24 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { FaEllipsisV } from "react-icons/fa"
+import { db } from "../firebase_config";
+import { doc, updateDoc, arrayRemove } from "firebase/firestore";
+import { useUserAuth } from "../context/UserAuthContext";
 
 const Class_Card = ({ data, id }) => {
+  const  { user } = useUserAuth();
   let path = `/class/${id}`;
   const handleUnenrollClick = () => {
     setModal(true)
   }
   const [modal, setModal] = useState(false);
-  const handleClickYes = () => {
+  const handleClickYes = async () => {
     console.log(id)
+    const removalRef = doc(db, "classes", `${id}`);
+    await updateDoc(removalRef, {
+      members: arrayRemove(user.email)
+  });
+  
   }
   return (
     <>
@@ -18,7 +27,7 @@ const Class_Card = ({ data, id }) => {
       <div className="class-card m-auto">
         <div className="card-head">
           <div className="flex justify-between relative">
-            <Link to={path} className="class-name">{data.class_name}</Link>
+            <Link to={path} className="class-name overflow-hidden text-ellipsis whitespace-nowrap w-4/6">{data.class_name}</Link>
             <Disclosure as="div" className="absolute right-3 top-2 scale-110 z-40">
               <Menu as="div" className="ml-3 relative">
                 <div>
@@ -59,7 +68,7 @@ const Class_Card = ({ data, id }) => {
     </div>
     {modal ? (
         <>
-          <div className="justify-center w-max  md:w-3/4 m-auto items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+          <div className="justify-center w-max  md:w-2/4 m-auto items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
             <div className="relative  my-6 mx-auto w-max md:w-3/4">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">

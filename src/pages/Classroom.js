@@ -22,49 +22,74 @@ import User_Class_Component from "../component/User_Class_Component";
 const Classroom = () => {
   const navigate = useNavigate();
   const { user } = useUserAuth();
-  const { setLocationId, getCurrentDate, setIsAdmin, isAdmin } = useUserClass();
-
+  const { getCurrentDate } = useUserClass();
+  const [isAdmin, setIsAdmin] = useState(false);
   const [message, setMessage] = useState("");
   let { id } = useParams();
-  const [current_class, setCurrent_class] = useState(setLocationId(id));
+  const testData = {
+    data: {
+      creatorEmail: "test@gmail.com",
+      members: ["test@gmail.com"],
+    },
+  };
+  const [members, setMembers] = useState(testData.data.members);
+  const [current_class, setCurrent_class] = useState(testData);
+  const [editClassName, setEditClassName] = useState("");
+
+
   useEffect(() => {
-    setCurrent_class(setLocationId(id))
-  }, [setLocationId]);
-  let is_member = false;
-  try {
-    if (current_class) {
-      try {
-        if (user.email === current_class.data.creatorEmail) {
-          setIsAdmin(true);
+    if (current_class.data.creatorEmail === "test@gmail.com") {
+      const unsub = onSnapshot(doc(db, "classes", `${id}`), (doc) => {
+        const doc_data = {
+          id: doc.id,
+          data: doc.data(),
+        };
+        setCurrent_class(doc_data);
+        setMembers(doc_data.data.members);
+        setEditClassName(doc_data.data.class_name)
+      });
+      return () => {
+        unsub();
+      };
+    }
+  }, []);
+  useEffect(() => {
+    try {
+      if (current_class) {
+        try {
+          if (current_class && user.email === current_class.data.creatorEmail) {
+            setIsAdmin(true);
+          }
+        } catch (err) {
+          console.log(err);
         }
-      } catch (err) {
-        console.log(err);
+      } else {
+        navigate("/class");
       }
-      let current_data = current_class.data.members;
-      for (let i = 0; i < current_data.length; i++) {
-        if (current_data[i] === user.email) {
-          is_member = true;
-        }
-      }
-    } else {
+    } catch (error) {
       navigate("/class");
     }
-  } catch (error) {
-    navigate("/class");
-  }
-  const [editClassName, setEditClassName] = useState(current_class.data.class_name)
+  }, [current_class]);
+
   useEffect(() => {
-    if (!is_member) {
-      navigate("/class");
+    for (let i = 0; i < members.length; i++) {
+      if (members[i] === user.email) {
+        break;
+      } else if (members[i] === "test@gmail.com") {
+        break;
+      } else {
+        navigate("/class");
+      }
     }
-  }, [is_member]);
+  }, [members]);
+
   const [works, setWork] = useState([]);
-  const ref = query(
-    collection(db, "classes", `${id}`, "work"),
-    orderBy("timestamp")
-  );
   const [openTab, setOpenTab] = useState(1);
   useEffect(() => {
+    const ref = query(
+      collection(db, "classes", `${id}`, "work"),
+      orderBy("timestamp")
+    );
     const unsubscribe = onSnapshot(ref, (querySnapshot) => {
       let arr = [];
       querySnapshot.forEach((doc) => {
@@ -84,7 +109,7 @@ const Classroom = () => {
 
   const copyInviteLink = (e) => {
     navigator.clipboard.writeText(e.target.value);
-    call_alert("Invite Link Copied!!")
+    call_alert("Invite Link Copied!!");
   };
 
   const deleteAnnouncement = async (
@@ -103,11 +128,10 @@ const Classroom = () => {
   const updateDocumnentDetails = async () => {
     const docRef = doc(db, "classes", `${id}`);
     await updateDoc(docRef, {
-      class_name: editClassName
-    })
-    .then(() => {
-      call_alert("Settings Updated!!")
-    })
+      class_name: editClassName,
+    }).then(() => {
+      call_alert("Settings Updated!!");
+    });
   };
 
   const sendAnnoucement = async (message) => {
@@ -137,8 +161,8 @@ const Classroom = () => {
   };
 
   const handleClassNameChange = (e) => {
-    setEditClassName(e.target.value)
-  }
+    setEditClassName(e.target.value);
+  };
 
   return (
     <>
@@ -248,7 +272,7 @@ const Classroom = () => {
                   {works.map((work) => {
                     return (
                       <Announcement_Box
-                      parentId={id}
+                        parentId={id}
                         deleteFunc={deleteAnnouncement}
                         work={work}
                         key={work.data.timestamp}
@@ -291,16 +315,15 @@ const Classroom = () => {
                 >
                   <h1 className="text-xl font-bold">Users: </h1>
                   <hr className="bg-slate-500 mb-3" />
-                  {is_member &&
-                    current_class.data.members.map((user_email) => {
-                      return (
-                        <User_Class_Component
-                          userEmail={user.email}
-                          key={user_email}
-                          user={user_email}
-                        />
-                      );
-                    })}
+                  {user && members.map((user_email) => {
+                    return (
+                      <User_Class_Component
+                        userEmail={user.email}
+                        key={user_email}
+                        user={user_email}
+                      />
+                    );
+                  })}
                 </div>
                 <div className={openTab === 4 ? "block" : "hidden"} id="link4">
                   <h1 className="text-xl font-bold">Settings: </h1>
@@ -318,7 +341,6 @@ const Classroom = () => {
                       className="rounded-md w-full mb-4"
                       placeholder="Class Name"
                       autoComplete="off"
-                      defaultValue={is_member && current_class.data.class_name}
                       value={editClassName}
                       onChange={handleClassNameChange}
                     />
@@ -336,7 +358,11 @@ const Classroom = () => {
                       readOnly
                       onFocus={copyInviteLink}
                       onClick={copyInviteLink}
-                      value={`https://class-suit.vercel.app/invite/${current_class.id}`}
+                      value={
+                        current_class
+                          ? `https://class-suit.vercel.app/invite/${current_class.id}`
+                          : null
+                      }
                     />
 
                     <div className="py-4">
