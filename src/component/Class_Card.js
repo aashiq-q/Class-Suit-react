@@ -14,7 +14,6 @@ const Class_Card = ({ data, id }) => {
   }
   const [modal, setModal] = useState(false);
   const handleClickYes = async () => {
-    console.log(id)
     const removalRef = doc(db, "classes", `${id}`);
     await updateDoc(removalRef, {
       members: arrayRemove(user.email)

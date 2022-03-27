@@ -5,6 +5,7 @@ import { db } from "../firebase_config";
 import Accordian from "../component/Accordian";
 
 const Submissions = () => {
+  document.title = "Class-Suit | Submission"
   const { parentID, workID } = useParams();
   const [submission, setSubmission] = useState([]);
   useEffect(() => {

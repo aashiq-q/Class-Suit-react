@@ -84,7 +84,6 @@ export function UserClassContextProvider({ children }) {
   };
 
   const join_class_with_code = async (doc_id, email) => {
-    console.log(doc_id);
     const docRef = doc(db, "classes", doc_id);
 
     await updateDoc(docRef, {

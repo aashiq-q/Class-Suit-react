@@ -22,6 +22,7 @@ import { useUserClass } from "../context/UserClassContext";
 import { useUserAuth } from "../context/UserAuthContext";
 
 const CreateWork = () => {
+  document.title = "Class-Suit | Create-Work"
   const navigate = useNavigate();
   const storage = getStorage();
   const { parentID } = useParams();
@@ -62,13 +63,10 @@ const CreateWork = () => {
         .then(async (docRef) => {
           setdocRefID(docRef.id);
           const dataId = docRef.id;
-          console.log("done");
           if (InputFiles.length === 0) {
             return;
           } else {
-            console.log();
             InputFiles.forEach((inputFile) => {
-              console.log(inputFile);
               const fileName = inputFile.name;
               const path = `${parentID}/${docRef.id}/${fileName}`;
               const storageRef = ref(storage, path);

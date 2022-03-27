@@ -18,7 +18,6 @@ import Bookmark from "./component/Bookmark";
 function App() {
   const [message, setMessage] = useState("");
   const [flag, setflag] = useState(false);
-  console.log("hey")
   window.addEventListener("offline", () => {
     call_alert("Please Check Your Internet Connection!!");
   });
@@ -41,8 +40,8 @@ function App() {
         <Bookmark />
 
         <Routes>
-          <Route path="/login" exact element={<Login />} />
           <Route path="/" exact element={<Class_Card_Container />} />
+          <Route path="/auth" exact element={<Login />} />
           <Route path="/class/:id" exact element={<Classroom />} />
           <Route path="/invite/:id" exact element={<Invite_Class />} />
           <Route path="/assign/:parentID" exact element={<CreateWork />} />

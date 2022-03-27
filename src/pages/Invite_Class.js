@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
 
 const Invite_Class = () => {
+  document.title = "Class-Suit | Invite"
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(true);
   const { join_class_with_code } = useUserClass();

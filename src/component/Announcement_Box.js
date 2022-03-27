@@ -16,12 +16,10 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
     const querySnapshot = await getDocs(q);
     let submissionArr = [];
     querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       submissionArr.push(doc.data());
     });
     deleteFunc(id, data.email, data.creatorEmail);
     submissionArr.forEach((itemRef) => {
-      console.log(itemRef);
       const listRef = ref(
         storage,
         `/${parentId}/${id}/Submissions/${itemRef.email}`
@@ -29,7 +27,6 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
       listAll(listRef)
         .then((res) => {
           res.items.forEach((itemRef) => {
-            console.log("itemRef: ", itemRef.fullPath);
             const deleteRef = ref(storage, itemRef.fullPath);
             deleteObject(deleteRef)
               .then(() => {
@@ -43,9 +40,7 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
           listAll(listRef)
             .then((res) => {
               res.items.forEach((itemRef) => {
-                console.log("itemRef: ", itemRef.fullPath);
                 const deleteRef = ref(storage,  itemRef.fullPath);
-      
                 deleteObject(deleteRef)
                   .then(() => {
                     console.log("file deleted successfully")

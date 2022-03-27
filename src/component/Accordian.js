@@ -3,7 +3,6 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa"
 import FileNameDisplay from "../component/FileNameDisplay"
 
 const Accordian = ({ data }) => {
-  console.log(data)
   const [isShown, setIsShown] = useState(false);
   const handleAccordian = () => {
     isShown ? setIsShown(false) : setIsShown(true)

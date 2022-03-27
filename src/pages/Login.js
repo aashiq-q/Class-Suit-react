@@ -4,6 +4,7 @@ import GoogleButton from "react-google-button";
 import { useUserAuth } from "../context/UserAuthContext";
 
 const Login = () => {
+  document.title = "Class-Suit | Authentication"
   const { googleSignIn } = useUserAuth();
   const navigate = useNavigate();
   const handleGoogleSignIn = async (e) => {

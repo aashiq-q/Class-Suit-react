@@ -96,10 +96,8 @@ const ViewAssignment = () => {
             id: doc.id,
             docData: doc.data(),
           };
-          console.log(docData);
 
           if (docData.docData !== undefined && docData.docData.dataUploaded) {
-            console.log(docData);
             setSubmittedData(docData);
             setSubmitString("Already Submitted");
             call_alert(
@@ -115,10 +113,6 @@ const ViewAssignment = () => {
       };
     }
   }, [user]);
-
-  useEffect(() => {
-    console.log(submittedData);
-  }, [submittedData]);
 
   const handleFileChange = (e) => {
     let files = e.target.files;
@@ -266,7 +260,6 @@ const ViewAssignment = () => {
             })}
           {submittedData &&
             submittedData.docData.regions.map((files) => {
-              console.log(submittedData.docData);
               return (
                 <FileNameDisplay
                   key={files.url}
