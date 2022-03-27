@@ -64,10 +64,10 @@ const Classroom = () => {
           console.log(err);
         }
       } else {
-        navigate("/class");
+        navigate("/");
       }
     } catch (error) {
-      navigate("/class");
+      navigate("/");
     }
   }, [current_class]);
 
@@ -78,7 +78,7 @@ const Classroom = () => {
       } else if (members[i] === "test@gmail.com") {
         break;
       } else {
-        navigate("/class");
+        navigate("/");
       }
     }
   }, [members]);

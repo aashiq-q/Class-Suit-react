@@ -18,6 +18,7 @@ import Bookmark from "./component/Bookmark";
 function App() {
   const [message, setMessage] = useState("");
   const [flag, setflag] = useState(false);
+  console.log("hey")
   window.addEventListener("offline", () => {
     call_alert("Please Check Your Internet Connection!!");
   });

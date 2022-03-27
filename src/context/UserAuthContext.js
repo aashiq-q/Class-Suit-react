@@ -28,16 +28,9 @@ export function UserAuthContextProvider({ children }) {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       setUser(currentuser);
       console.log(currentuser);
-      // if (currentuser) {
-      //   // location.pathname.includes("invite") || location.pathname.includes("work") || location.pathname.includes("quiz")
-      //   // if (true) {
-      //   //   return;
-      //   // } else {
-      //   //   navigate("/class");
-      //   // }
-      // } else {
-      //   navigate("/");
-      // }
+      if (!currentuser) {
+        navigate("/login");
+      }
     });
 
     return () => {

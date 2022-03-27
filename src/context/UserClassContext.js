@@ -46,7 +46,7 @@ export function UserClassContextProvider({ children }) {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [user]);
 
   const [isAdmin, setIsAdmin] = useState(false);
 

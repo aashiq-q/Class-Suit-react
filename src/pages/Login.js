@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await googleSignIn();
-        navigate("/class");
+        navigate("/");
     } catch (error) {
       console.log(error.message);
     }
