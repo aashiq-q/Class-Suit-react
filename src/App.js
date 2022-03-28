@@ -15,6 +15,7 @@ import Submissions from "./pages/Submissions";
 import QuizMain from "./pages/QuizMain";
 import Bookmark from "./component/Bookmark";
 import Offline from "./pages/Offline";
+import Loading from "./component/Loading";
 
 function App() {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ function App() {
     <UserAuthContextProvider>
       <UserClassContextProvider>
         <Navbar />
+        <Loading/>
         <Alert message={message} flag={flag} messageSetter={setMessage} />
         <Bookmark />
 

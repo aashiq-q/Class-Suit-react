@@ -8,7 +8,6 @@ const Class_Card_Container = () => {
 	<div className='p-10 flex flex-wrap gap-8 justify-center md:justify-start'>
     {
       classes.map((classroom) => {
-        console.log(classroom)
         return (
           <Class_Card key={classroom.id} creator={classroom.data.creatorEmail} id={classroom.id} data={classroom.data}/>
         )

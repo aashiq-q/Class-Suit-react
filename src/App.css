@@ -110,3 +110,49 @@ input:checked + div svg {
 label, span{
   user-select: none;
 }
+
+.loading{
+  height: 3px;
+  width: 100vw;
+  position: relative;
+}
+.loading::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, red, transparent);
+  animation: changeWidth 5s infinite ease-in-out;
+  border-radius: 5px;
+}
+/* .loading::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 3px;
+  background-color: red;
+  animation: changeWidth2 3s infinite linear;
+} */
+@keyframes changeWidth {
+  0%{
+    width: 0;
+  }
+  50%{
+    width: 100vw;
+  }
+  100%{
+    width: 0%;
+  }
+}
+@keyframes changeWidth2 {
+  0%{
+    width: 100vw;
+  }
+  100%{
+    width: 0;
+  }
+}

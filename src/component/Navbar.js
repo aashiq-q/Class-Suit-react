@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { BiRightArrowAlt, BiLeftArrowAlt } from "react-icons/bi"
 import { useUserAuth } from "../context/UserAuthContext";
 import { useLocation } from "react-router-dom";
 import { useUserClass } from "../context/UserClassContext";
@@ -46,6 +47,13 @@ export default function Navbar() {
     setJoin_class_id(e.target.value);
   };
 
+  const handleForward = () => {
+    window.history.forward()
+  }
+  const handleBackward = () => {
+    window.history.back()
+  }
+
   const [CreateClassModal, setCreateClassModal] = useState(false);
 
   const [JoinClassModal, setJoinClassModal] = useState(false);
@@ -53,8 +61,16 @@ export default function Navbar() {
     <>
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
-          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div className=" mx-auto px-2 sm:px-6 lg:px-8 w-full">
             <div className="relative flex items-center justify-between h-16">
+              <div className="flex text-white mr-8">
+               <span onClick={handleBackward} className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer">
+               <BiLeftArrowAlt />
+               </span>
+               <span onClick={handleForward} className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer">
+                <BiRightArrowAlt />
+               </span>
+              </div>
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
@@ -75,7 +91,7 @@ export default function Navbar() {
                     alt="Workflow"
                   />
                   <img
-                    className="hidden lg:block h-8 w-auto"
+                    className="hidden lg:block h-9 w-auto"
                     src="/logo.svg"
                     alt="Workflow"
                   />
