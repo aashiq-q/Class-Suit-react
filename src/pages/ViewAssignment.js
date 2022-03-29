@@ -222,7 +222,7 @@ const ViewAssignment = () => {
       <Alert messageSetter={setMessage} message={message} flag={flag} />
       {isLoading ? <LoadingScreen /> : null}
       <div className="flex flex-col w-3/4 m-auto mt-5">
-        <div className="flex justify-between items-center font-bold text-3xl">
+        <div className="flex justify-center flex-col items-start font-bold text-3xl md:flex-row md:justify-between md:items-center">
           <p className="flex items-center font-bold text-3xl">
             {data && data.docData.title}
             <a href={`https://www.google.com/search?q=${finalQueryText}`} className="text-blue-600" target="_blank">
