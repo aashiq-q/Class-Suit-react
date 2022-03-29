@@ -18,6 +18,7 @@ import { useUserAuth } from "../context/UserAuthContext";
 import { useUserClass } from "../context/UserClassContext";
 import Alert from "../component/Alert";
 import User_Class_Component from "../component/User_Class_Component";
+import { BsInfoCircle } from "react-icons/bs"
 
 const Classroom = () => {
   const navigate = useNavigate();
@@ -256,7 +257,9 @@ const Classroom = () => {
               </li>
             </div>
           </ul>
-
+          <div className="flex justify-between my-2">
+            <h1 className="text-2xl font-bold">Class : {editClassName}</h1>
+          </div>
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full m-auto mb-6 rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">

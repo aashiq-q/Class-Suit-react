@@ -23,6 +23,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import Alert from "../component/Alert";
+import { FiExternalLink } from "react-icons/fi";
 
 const ViewAssignment = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const ViewAssignment = () => {
   useEffect(() => {
     setCurrent_class(setLocationId(parentID));
     if (current_class && current_class.data.creatorEmail === user.email) {
-      setIsAdmin(true)
+      setIsAdmin(true);
     }
   }, []);
   useEffect(() => {
@@ -201,22 +202,46 @@ const ViewAssignment = () => {
   };
 
   const [progressPercentage, setprogressPercentage] = useState(0);
+  const searchURL = () => {
+    if (data && data.docData.title.length === 0) {
+      return;
+    }
+    const title = data && data.docData.title;
+    if (title) {
+      const query = title.split(" ");
+      setfinalQueryText(query.join("+"));
+    }
+  };
+  useEffect(() => {
+    searchURL();
+  }, []);
+
+  const [finalQueryText, setfinalQueryText] = useState("");
   return (
     <>
       <Alert messageSetter={setMessage} message={message} flag={flag} />
       {isLoading ? <LoadingScreen /> : null}
       <div className="flex flex-col w-3/4 m-auto mt-5">
-        <p className="flex justify-between items-center font-bold text-3xl">
-          {data && data.docData.title}
+        <div className="flex justify-between items-center font-bold text-3xl">
+          <p className="flex items-center font-bold text-3xl">
+            {data && data.docData.title}
+            <a href={`https://www.google.com/search?q=${finalQueryText}`} className="text-blue-600" target="_blank">
+              <FiExternalLink className="ml-4 cursor-pointer text-base" />
+            </a>
+          </p>
           <a
-            className={isAdmin ? "cursor-pointer bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2" : "hidden"}
+            className={
+              isAdmin
+                ? "cursor-pointer bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
+                : "hidden"
+            }
             onClick={() => {
               navigate(`/submissions/${parentID}/${workID}`);
             }}
           >
             Submissions
           </a>
-        </p>
+        </div>
         <p className="font-semibold mt-3 text-slate-400 text-base">
           {data && data.docData.description}
         </p>
@@ -249,13 +274,11 @@ const ViewAssignment = () => {
           />
         </div>
         <div className="flex flex-wrap">
-          {!submittedData && inputfiles &&
+          {!submittedData &&
+            inputfiles &&
             inputfiles.map((file) => {
               return (
-                <FileNameDisplay
-                  key={file.name}
-                  file={{ name: file.name }}
-                />
+                <FileNameDisplay key={file.name} file={{ name: file.name }} />
               );
             })}
           {submittedData &&

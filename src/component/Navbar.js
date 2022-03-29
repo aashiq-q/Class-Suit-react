@@ -63,7 +63,7 @@ export default function Navbar() {
         {({ open }) => (
           <div className=" mx-auto px-2 sm:px-6 lg:px-8 w-full">
             <div className="relative flex items-center justify-between h-16">
-              <div className="flex text-white mr-8">
+              <div className="text-white mr-8 hidden md:flex">
                <span onClick={handleBackward} className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer">
                <BiLeftArrowAlt />
                </span>

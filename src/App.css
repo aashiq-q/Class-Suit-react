@@ -127,16 +127,6 @@ label, span{
   animation: changeWidth 5s infinite ease-in-out;
   border-radius: 5px;
 }
-/* .loading::before{
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100vw;
-  height: 3px;
-  background-color: red;
-  animation: changeWidth2 3s infinite linear;
-} */
 @keyframes changeWidth {
   0%{
     width: 0;

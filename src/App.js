@@ -41,7 +41,7 @@ function App() {
     <UserAuthContextProvider>
       <UserClassContextProvider>
         <Navbar />
-        <Loading/>
+        {/* <Loading/> */}
         <Alert message={message} flag={flag} messageSetter={setMessage} />
         <Bookmark />
 
