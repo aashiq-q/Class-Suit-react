@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { BiRightArrowAlt, BiLeftArrowAlt } from "react-icons/bi"
+import { BiRightArrowAlt, BiLeftArrowAlt } from "react-icons/bi";
 import { useUserAuth } from "../context/UserAuthContext";
 import { useLocation } from "react-router-dom";
 import { useUserClass } from "../context/UserClassContext";
@@ -19,6 +19,14 @@ export default function Navbar() {
   };
   const [show_menu, set_show_menu] = useState(true);
   const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/auth") {
+      set_show_menu(false);
+    } else {
+      set_show_menu(true);
+    }
+  }, [location]);
 
   const [create_class_name, setCreate_class_name] = useState();
   const [join_class_id, setJoin_class_id] = useState();
@@ -48,11 +56,11 @@ export default function Navbar() {
   };
 
   const handleForward = () => {
-    window.history.forward()
-  }
+    window.history.forward();
+  };
   const handleBackward = () => {
-    window.history.back()
-  }
+    window.history.back();
+  };
 
   const [CreateClassModal, setCreateClassModal] = useState(false);
 
@@ -63,13 +71,19 @@ export default function Navbar() {
         {({ open }) => (
           <div className=" mx-auto px-2 sm:px-6 lg:px-8 w-full">
             <div className="relative flex items-center justify-between h-16">
-              <div className="text-white mr-8 hidden md:flex">
-               <span onClick={handleBackward} className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer">
-               <BiLeftArrowAlt />
-               </span>
-               <span onClick={handleForward} className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer">
-                <BiRightArrowAlt />
-               </span>
+              <div className={show_menu ? "text-white mr-8 hidden md:flex": "hidden"}>
+                <span
+                  onClick={handleBackward}
+                  className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer"
+                >
+                  <BiLeftArrowAlt />
+                </span>
+                <span
+                  onClick={handleForward}
+                  className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer"
+                >
+                  <BiRightArrowAlt />
+                </span>
               </div>
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -180,14 +194,14 @@ export default function Navbar() {
                     <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <p
+                          <a
                             className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                             onClick={() => {
                               logOut();
                             }}
                           >
                             Sign Out
-                          </p>
+                          </a>
                         )}
                       </Menu.Item>
                     </Menu.Items>

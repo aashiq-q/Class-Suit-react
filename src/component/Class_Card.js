@@ -9,7 +9,7 @@ import { useUserAuth } from "../context/UserAuthContext";
 const Class_Card = ({ data, id, creator }) => {
   const  { user } = useUserAuth();
   let path = `/class/${id}`;
-  const [isAdmin, setIsAdmin] = useState(user.email === creator)
+  const [isAdmin, setIsAdmin] = useState(user && user.email === creator)
   const handleUnenrollClick = () => {
     setModal(true)
   }
@@ -21,7 +21,7 @@ const Class_Card = ({ data, id, creator }) => {
   });
   }
   useEffect(() => {
-    setIsAdmin(user.email === creator)
+    setIsAdmin(user && user.email === creator)
   }, [user]);
   return (
     <>

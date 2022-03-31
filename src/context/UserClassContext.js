@@ -20,7 +20,7 @@ const userClassContext = createContext();
 export function UserClassContextProvider({ children }) {
   const [ currentClass, setCurrentClass ] = useState("")
   
-  const { user } = useUserAuth();
+  const { user, logOut } = useUserAuth();
   const [classes, setClasses] = useState([]);
   useEffect(() => {
     const q = query(
@@ -50,6 +50,9 @@ export function UserClassContextProvider({ children }) {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
+  window.addEventListener("unload", function (e) {
+      logOut()
+  });
 
   const getCurrentDate = () => {
     const date_obj = new Date();
