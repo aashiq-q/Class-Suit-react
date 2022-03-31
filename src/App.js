@@ -15,7 +15,6 @@ import Submissions from "./pages/Submissions";
 import QuizMain from "./pages/QuizMain";
 import Bookmark from "./component/Bookmark";
 import Offline from "./pages/Offline";
-import NewNavbar from "./component/NewNavbar"
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
@@ -42,8 +41,7 @@ function App() {
   return (
     <UserAuthContextProvider>
       <UserClassContextProvider>
-        {/* <Navbar /> */}
-        <NewNavbar/>
+        <Navbar />
         {/* <Loading/> */}
         <Alert message={message} flag={flag} messageSetter={setMessage} />
         <Bookmark />

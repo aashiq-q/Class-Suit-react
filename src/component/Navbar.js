@@ -1,11 +1,22 @@
+/* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
-import { BiRightArrowAlt, BiLeftArrowAlt } from "react-icons/bi";
+import { BiRightArrowAlt, BiLeftArrowAlt, BiPlus } from "react-icons/bi";
 import { useUserAuth } from "../context/UserAuthContext";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useUserClass } from "../context/UserClassContext";
-export default function Navbar() {
+const navigation = [
+  { name: "Main", href: "/", current: true },
+  { name: "About", href: "/about", current: false },
+  { name: "Contact", href: "/contact", current: false },
+];
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+export default function NewNavbar() {
   const { create_class, join_class_with_code } = useUserClass();
   const { user, logOut } = useUserAuth();
 
@@ -14,13 +25,16 @@ export default function Navbar() {
   }, [user]);
 
   const [PhotoURL, setPhotoURL] = useState("");
-  const handleSignOut = () => {
-    logOut();
-  };
   const [show_menu, set_show_menu] = useState(true);
+  const [leaveClass, setLeaveClass] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname.includes("/class")) {
+      setLeaveClass(false);
+    } else {
+      setLeaveClass(true);
+    }
     if (location.pathname === "/auth") {
       set_show_menu(false);
     } else {
@@ -65,151 +79,212 @@ export default function Navbar() {
   const [CreateClassModal, setCreateClassModal] = useState(false);
 
   const [JoinClassModal, setJoinClassModal] = useState(false);
+
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
-          <div className=" mx-auto px-2 sm:px-6 lg:px-8 w-full">
-            <div className="relative flex items-center justify-between h-16">
-              <div className={show_menu ? "text-white mr-8 hidden md:flex": "hidden"}>
-                <span
-                  onClick={handleBackward}
-                  className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer"
+          <>
+            <div className="max-w-full w-full mx-auto px-2 sm:px-6 lg:px-8 py-2">
+              <div className="relative flex items-center justify-between h-16">
+                <div
+                  className={
+                    show_menu ? "text-white mr-8 hidden md:flex" : "hidden"
+                  }
                 >
-                  <BiLeftArrowAlt />
-                </span>
-                <span
-                  onClick={handleForward}
-                  className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer"
-                >
-                  <BiRightArrowAlt />
-                </span>
-              </div>
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <MenuIcon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
+                  <span
+                    onClick={handleBackward}
+                    className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer"
+                  >
+                    <BiLeftArrowAlt />
+                  </span>
+                  <span
+                    onClick={handleForward}
+                    className="mx-2 text-2xl p-1 rounded-full bg-slate-500 hover:bg-slate-400 duration-200 cursor-pointer"
+                  >
+                    <BiRightArrowAlt />
+                  </span>
+                </div>
+                <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                  {/* Mobile menu button*/}
+                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                    <span className="sr-only">Open main menu</span>
+                    {open ? (
+                      <XIcon className="block h-6 w-6" aria-hidden="true" />
+                    ) : (
+                      <MenuIcon className="block h-6 w-6" aria-hidden="true" />
+                    )}
+                  </Disclosure.Button>
+                </div>
+                <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
+                  <div className="flex-shrink-0 flex items-center">
+                    <img
+                      className="block lg:hidden h-8 w-auto"
+                      src="/logoSVG.svg"
+                      alt="Workflow"
+                    />
+                    <img
+                      className="hidden lg:block h-8 w-auto"
+                      src="/logo.svg"
+                      alt="Workflow"
+                    />
+                  </div>
+                  <div className="hidden sm:block sm:ml-6">
+                    <div className="flex space-x-4">
+                      {navigation.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={classNames(
+                            item.current
+                              ? "bg-gray-900 text-white"
+                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            "px-3 py-2 rounded-md text-sm font-medium"
+                          )}
+                          aria-current={item.current ? "page" : undefined}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <Menu
+                    as="div"
+                    className={show_menu ? "ml-3 relative mr-5" : "hidden"}
+                  >
+                    <div>
+                      <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span className="sr-only">Open user menu</span>
+                        <button
+                          type="button"
+                          className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        >
+                          <span className="sr-only">View notifications</span>
+                          <BiPlus className="h-6 w-6" aria-hidden="true" />
+                        </button>
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <p
+                              className={
+                                active
+                                  ? "bg-gray-100 block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                  : "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                              }
+                              onClick={() => setCreateClassModal(true)}
+                            >
+                              Create Class
+                            </p>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <p
+                              className={
+                                active
+                                  ? "bg-gray-100 block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                  : "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                              }
+                              onClick={() => setJoinClassModal(true)}
+                            >
+                              Join Class
+                            </p>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <p
+                              className={
+                                !leaveClass
+                                  ? "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                  : "hidden"
+                              }
+                            >
+                              Leave Class
+                            </p>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
 
-              <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex-shrink-0 flex items-center">
-                  <img
-                    className="block lg:hidden h-10 w-auto"
-                    src="/logoSVG.svg"
-                    alt="Workflow"
-                  />
-                  <img
-                    className="hidden lg:block h-9 w-auto"
-                    src="/logo.svg"
-                    alt="Workflow"
-                  />
+                  {/* Profile dropdown */}
+                  <Menu as="div" className="ml-3 relative">
+                    <div>
+                      <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span className="sr-only">Open user menu</span>
+                        <img
+                          className="h-8 w-8 rounded-full"
+                          src={PhotoURL}
+                          alt=""
+                        />
+                      </Menu.Button>
+                    </div>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              onClick={() => {
+                                logOut();
+                              }}
+                              className={classNames(
+                                active ? "bg-gray-100 cursor-pointer" : "",
+                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                              )}
+                            >
+                              Sign out
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </Menu.Items>
+                    </Transition>
+                  </Menu>
                 </div>
               </div>
-
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* Profile dropdown */}
-                <Menu as="div" className="block ml-2 relative">
-                  <div>
-                    <Menu.Button className="bg-gray-800 flex text-sm rounded focus:outline-none  focus:border-slate-300">
-                      <span className="sr-only">Open user menu</span>
-                      <div className="flex justify-center items-center border-2 rounded w-10 h-10 mr-10">
-                        <i className="bi bi-plus-lg text-white"></i>
-                      </div>
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="mr-10 z-50 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <p
-                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            onClick={() => setCreateClassModal(true)}
-                          >
-                            Create Class
-                          </p>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <p
-                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            onClick={() => setJoinClassModal(true)}
-                          >
-                            Join Class
-                          </p>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <p
-                            className={
-                              show_menu
-                                ? "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                                : "hidden"
-                            }
-                            // onClick={handleSignOut}
-                          >
-                            Leave Class
-                          </p>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-
-                <Menu as="div" className="ml-3 relative">
-                  <div>
-                    <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src={PhotoURL}
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                            onClick={() => {
-                              logOut();
-                            }}
-                          >
-                            Sign Out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
             </div>
-          </div>
+
+            <Disclosure.Panel className="sm:hidden">
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                {navigation.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    className={classNames(
+                      item.current
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      "block px-3 py-2 rounded-md text-base font-medium"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                  >
+                    <Link  to={item.href}>{item.name}</Link>
+                  </Disclosure.Button>
+                ))}
+              </div>
+            </Disclosure.Panel>
+          </>
         )}
       </Disclosure>
       {CreateClassModal ? (

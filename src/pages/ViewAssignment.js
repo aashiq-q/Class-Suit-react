@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import FileNameDisplay from "../component/FileNameDisplay";
 import LoadingScreen from "../component/LoadingScreen";
 import {
   setDoc,
   onSnapshot,
   doc,
-  addDoc,
-  collection,
   serverTimestamp,
-  updateDoc,
   arrayUnion,
 } from "firebase/firestore";
 import { db } from "../firebase_config";
@@ -26,6 +23,7 @@ import Alert from "../component/Alert";
 import { FiExternalLink } from "react-icons/fi";
 
 const ViewAssignment = () => {
+  const location = useLocation()
   const navigate = useNavigate();
   const storage = getStorage();
   const { parentID, workID } = useParams();
@@ -202,7 +200,8 @@ const ViewAssignment = () => {
   };
 
   const [progressPercentage, setprogressPercentage] = useState(0);
-  const searchURL = () => {
+
+  useEffect(() => {
     if (data && data.docData.title.length === 0) {
       return;
     }
@@ -211,16 +210,12 @@ const ViewAssignment = () => {
       const query = title.split(" ");
       setfinalQueryText(query.join("+"));
     }
-  };
-  useEffect(() => {
-    searchURL();
-  }, []);
+  }, [data]);
 
   const [finalQueryText, setfinalQueryText] = useState("");
   return (
     <>
       <Alert messageSetter={setMessage} message={message} flag={flag} />
-      {isLoading ? <LoadingScreen /> : null}
       <div className="flex flex-col w-3/4 m-auto mt-5">
         <div className="flex justify-center flex-col items-start font-bold text-3xl md:flex-row md:justify-between md:items-center">
           <p className="flex items-center font-bold text-3xl">
