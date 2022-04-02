@@ -20,6 +20,7 @@ const Bookmark = () => {
       <div
         title="Bookmarks"
         className="right-3 md:right-9 bottom-9 bg-white duration-300 shadow-lg fixed flex justify-center flex-col-reverse items-center rounded-full border-2 p-3 md:scale-125 cursor-pointer"
+        style={{WebkitTapHighlightColor: transparent}}
       >
         <div onClick={handleBookmark}>
           {/* <input type="checkbox" id="isClosed" checked={isClosed} className="hidden"/> */}

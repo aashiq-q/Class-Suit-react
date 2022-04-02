@@ -1,10 +1,13 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
 @import url("https://fonts.googleapis.com/css?family=Nunito:200,300,regular,500,600,700,800,900,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic");
+*{
+  -webkit-tap-highlight-color: transparent !important;
+}
 body {
   height: 100vh;
-  /* overflow: hidden; */
   font-family: 'Nunito', sans-serif !important;
   overflow-y: scroll;
+  -webkit-tap-highlight-color: transparent !important;
 }
 body::-webkit-scrollbar{
   width: 0;
