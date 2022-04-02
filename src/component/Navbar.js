@@ -55,7 +55,7 @@ export default function NewNavbar() {
     if (join_class_id === "") {
       return;
     }
-    join_class_with_code(join_class_id, user.email);
+    join_class_with_code(join_class_id, user.email, user.uid);
     try {
       setJoinClassModal(false);
     } catch (error) {}

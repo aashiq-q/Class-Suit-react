@@ -18,7 +18,8 @@ import { useUserAuth } from "../context/UserAuthContext";
 import { useUserClass } from "../context/UserClassContext";
 import Alert from "../component/Alert";
 import User_Class_Component from "../component/User_Class_Component";
-import { BsInfoCircle } from "react-icons/bs"
+import { BsInfoCircle } from "react-icons/bs";
+import sendPushMessage from "../PushMessage/PushMessaging";
 
 const Classroom = () => {
   const navigate = useNavigate();
@@ -31,14 +32,13 @@ const Classroom = () => {
     data: {
       creatorEmail: "test@gmail.com",
       members: ["test@gmail.com"],
-      class_name: "Loading..."
+      class_name: "Loading...",
     },
   };
   const [members, setMembers] = useState(testData.data.members);
   const [current_class, setCurrent_class] = useState(testData);
   const [editClassName, setEditClassName] = useState("");
-  document.title = `Class-Suit | Class`
-
+  document.title = `Class-Suit | Class`;
 
   useEffect(() => {
     if (current_class.data.creatorEmail === "test@gmail.com") {
@@ -49,7 +49,7 @@ const Classroom = () => {
         };
         setCurrent_class(doc_data);
         setMembers(doc_data.data.members);
-        setEditClassName(doc_data.data.class_name)
+        setEditClassName(doc_data.data.class_name);
       });
       return () => {
         unsub();
@@ -67,21 +67,30 @@ const Classroom = () => {
           console.log(err);
         }
       } else {
+        console.log("71");
         navigate("/");
       }
     } catch (error) {
+      console.log("75");
       navigate("/");
     }
   }, [current_class]);
 
   useEffect(() => {
-    for (let i = 0; i < members.length; i++) {
-      if (members[i] === user.email) {
-        break;
-      } else if (members[i] === "test@gmail.com") {
-        break;
-      } else {
-        navigate("/");
+    if (members.length !== 0) {
+      for (let i = 0; i < members.length; i++) {
+        if (!user) {
+          return;
+        }
+        if (members[i] === user.email || members[i] === "test@gmail.com") {
+          navigate(`/class/${id}`);
+          break;
+        } else if (user.email === members[i]) {
+          navigate(`/class/${id}`);
+          break;
+        } else {
+          navigate("/");
+        }
       }
     }
   }, [members]);
@@ -151,6 +160,7 @@ const Classroom = () => {
       date: getCurrentDate(),
       timestamp: serverTimestamp(),
     });
+    sendPushMessage("this is new message");
     call_alert("Announcement Sent!");
   };
   const [flag, setflag] = useState(false);
@@ -320,15 +330,16 @@ const Classroom = () => {
                 >
                   <h1 className="text-xl font-bold">Users: </h1>
                   <hr className="bg-slate-500 mb-3" />
-                  {user && members.map((user_email) => {
-                    return (
-                      <User_Class_Component
-                        userEmail={user.email}
-                        key={user_email}
-                        user={user_email}
-                      />
-                    );
-                  })}
+                  {user &&
+                    members.map((user_email) => {
+                      return (
+                        <User_Class_Component
+                          userEmail={user.email}
+                          key={user_email}
+                          user={user_email}
+                        />
+                      );
+                    })}
                 </div>
                 <div className={openTab === 4 ? "block" : "hidden"} id="link4">
                   <h1 className="text-xl font-bold">Settings: </h1>

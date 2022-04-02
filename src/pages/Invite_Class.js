@@ -13,7 +13,7 @@ const Invite_Class = () => {
   const { user } = useUserAuth();
 
   const handleJoinClass = () => {
-    join_class_with_code(id, user.email);
+    join_class_with_code(id, user.email, user.uid);
     setShowModal(false);
     navigate(`/class`);
   };

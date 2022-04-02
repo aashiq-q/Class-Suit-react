@@ -23,6 +23,7 @@ export function UserClassContextProvider({ children }) {
   const { user, logOut } = useUserAuth();
   const [classes, setClasses] = useState([]);
   useEffect(() => {
+   try {
     const q = query(
       collection(db, "classes"),
       where("members", "array-contains", `${user && user.email}`)
@@ -35,6 +36,7 @@ export function UserClassContextProvider({ children }) {
             id: doc.id,
             data: doc.data(),
           };
+          console.log(doc_data)
           arr.push(doc_data);
         });
         arr = arr.reverse();
@@ -46,6 +48,9 @@ export function UserClassContextProvider({ children }) {
     } catch (error) {
       console.log(error);
     }
+   } catch (error) {
+     console.log(error)
+   }
   }, [user]);
 
   const [isAdmin, setIsAdmin] = useState(false);
@@ -75,6 +80,10 @@ export function UserClassContextProvider({ children }) {
   };
 
   const create_class = async (name) => {
+    const data = {
+      email: user.email,
+      uid: user.uid
+    }
     await addDoc(collection(db, "classes"), {
       announcementPermssionBoolean: false,
       class_name: name,
@@ -86,12 +95,20 @@ export function UserClassContextProvider({ children }) {
     });
   };
 
-  const join_class_with_code = async (doc_id, email) => {
+  const join_class_with_code = async (doc_id, email, uid) => {
+    console.log(uid)
     const docRef = doc(db, "classes", doc_id);
-
+    const docRef2 = doc(db, "PushNotification", "Members");
+    const newData = {
+      email: email,
+      uid: uid
+    }
     await updateDoc(docRef, {
       members: arrayUnion(email),
     });
+    // await updateDoc(docRef2, {
+    //   members: arrayUnion(newData),
+    // });
   };
 
   return (
