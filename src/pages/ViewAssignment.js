@@ -36,14 +36,36 @@ const ViewAssignment = () => {
   const [submittedData, setSubmittedData] = useState(null);
 
   const { user } = useUserAuth();
-  const { getCurrentDate, isAdmin, setIsAdmin, setLocationId } = useUserClass();
+  const { getCurrentDate, isAdmin, setIsAdmin, setLocationId} = useUserClass();
   const [current_class, setCurrent_class] = useState(setLocationId(parentID));
+  // useEffect(() => {
+  //   const unsub = onSnapshot(
+  //     doc(db, "classes", `${parentID}`),
+  //     (doc) => {
+  //       const docData = {
+  //         id: doc.id,
+  //         docData: doc.data(),
+  //       };
+  //       console.log(docData)
+  //       setCurrent_class(docData);
+  //     }
+  //   );
+
+  //   return () => {
+  //     unsub();
+  //   };
+  // }, []);
+// const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
-    setCurrent_class(setLocationId(parentID));
-    if (current_class && current_class.data.creatorEmail === user.email) {
-      setIsAdmin(true);
-    }
-  }, []);
+    console.log(current_class)
+      if (current_class.data && current_class.data.creatorEmail === user.email) {
+        setIsAdmin(true)
+      }
+      else{
+        setIsAdmin(false)
+      }
+  }, [current_class]);
+
   useEffect(() => {
     setTimeout(() => {
       setisLoading(false);
@@ -70,6 +92,11 @@ const ViewAssignment = () => {
           id: doc.id,
           docData: doc.data(),
         };
+        console.log(docData)
+        if (isAdmin) {
+          window.localStorage.setItem('currentassignmentduedate', doc.data().due)
+          window.localStorage.setItem('currentassignmenttitle', doc.data().title)
+        }
         setData(docData);
       }
     );
@@ -237,11 +264,14 @@ const ViewAssignment = () => {
             Submissions
           </a>
         </div>
+        <p className="font-semibold mt-1 text-slate-400 text-base">
+          Due: {data && data.docData.due}
+        </p>
         <p className="font-semibold mt-3 text-slate-400 text-base">
           {data && data.docData.description}
         </p>
         <div className="flex flex-wrap">
-          {data &&
+          {data && data.docData.regions &&
             data.docData.regions.map((fileContent) => {
               return (
                 <FileNameDisplay

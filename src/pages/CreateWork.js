@@ -22,7 +22,7 @@ import { useUserClass } from "../context/UserClassContext";
 import { useUserAuth } from "../context/UserAuthContext";
 
 const CreateWork = () => {
-  document.title = "Class-Suit | Create-Work"
+  document.title = "Class-Suit | Create-Work";
   const navigate = useNavigate();
   const storage = getStorage();
   const { parentID } = useParams();
@@ -36,6 +36,7 @@ const CreateWork = () => {
   const [docRefID, setdocRefID] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
 
   const handleFileInputChange = (e) => {
     let arr = [];
@@ -59,12 +60,14 @@ const CreateWork = () => {
         timestamp: serverTimestamp(),
         type: "assignment",
         user: user.displayName,
+        due: date,
       })
         .then(async (docRef) => {
           setdocRefID(docRef.id);
           const dataId = docRef.id;
           if (InputFiles.length === 0) {
-            return;
+            call_alert("Assignment Posted Successfully!!");
+            // navigate(`/class/${parentID}/${docRefID}`);
           } else {
             InputFiles.forEach((inputFile) => {
               const fileName = inputFile.name;
@@ -103,7 +106,7 @@ const CreateWork = () => {
                         }),
                       })
                         .then(() => {
-                          navigate(`/class/${parentID}/${docRefID}`)
+                          navigate(`/class/${parentID}/${docRefID}`);
                         })
                         .catch((err) => {
                           console.log(err);
@@ -172,6 +175,23 @@ const CreateWork = () => {
             autoComplete="off"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="relative p-6 py-0 flex-auto">
+          <label
+            htmlFor="workDate"
+            className="block text-base font-medium text-gray-700 mb-2"
+          >
+            Date:
+          </label>
+          <input
+            id="workDate"
+            className="rounded-md w-full mb-4"
+            placeholder="Date"
+            autoComplete="off"
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
         </div>
         <div className="relative p-6 py-0 flex-auto">

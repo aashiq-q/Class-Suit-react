@@ -36,7 +36,6 @@ export function UserClassContextProvider({ children }) {
             id: doc.id,
             data: doc.data(),
           };
-          console.log(doc_data)
           arr.push(doc_data);
         });
         arr = arr.reverse();
