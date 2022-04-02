@@ -54,9 +54,6 @@ export function UserClassContextProvider({ children }) {
 
   const [isAdmin, setIsAdmin] = useState(false);
 
-  window.addEventListener("unload", function (e) {
-      logOut()
-  });
 
   const getCurrentDate = () => {
     const date_obj = new Date();

@@ -3,7 +3,11 @@
 *{
   -webkit-tap-highlight-color: transparent !important;
 }
+:root{
+  --bg-color: "white"
+}
 body {
+  background-color: var( --bg-color);
   height: 100vh;
   font-family: 'Nunito', sans-serif !important;
   overflow-y: scroll;

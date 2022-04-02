@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { BiRightArrowAlt, BiLeftArrowAlt, BiPlus } from "react-icons/bi";
 import { useUserAuth } from "../context/UserAuthContext";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUserClass } from "../context/UserClassContext";
 const navigation = [
   { name: "Main", href: "/", current: true },
@@ -21,6 +21,7 @@ export default function NewNavbar() {
 
   useEffect(() => {
     setPhotoURL(user && user.photoURL);
+   
   }, [user]);
 
   const [PhotoURL, setPhotoURL] = useState("");
@@ -28,6 +29,7 @@ export default function NewNavbar() {
   const [leaveClass, setLeaveClass] = useState(false);
   const location = useLocation();
 
+  const navigate = useNavigate()
   useEffect(() => {
     if (location.pathname.includes("/class")) {
       setLeaveClass(false);
@@ -39,6 +41,12 @@ export default function NewNavbar() {
     } else {
       set_show_menu(true);
     }
+    if (location.pathname === ('/')) {
+      if (!user) {
+        navigate('/auth')
+      }
+    }
+
   }, [location]);
 
   const [create_class_name, setCreate_class_name] = useState();
@@ -58,7 +66,7 @@ export default function NewNavbar() {
     join_class_with_code(join_class_id, user.email, user.uid);
     try {
       setJoinClassModal(false);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const handle_create_class_change = (e) => {
@@ -106,7 +114,7 @@ export default function NewNavbar() {
                 </div>
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
-                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 ">
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XIcon className="block h-6 w-6" aria-hidden="true" />
@@ -265,7 +273,7 @@ export default function NewNavbar() {
                     )}
                     aria-current={item.current ? "page" : undefined}
                   >
-                    <Link  to={item.href}>{item.name}</Link>
+                    <Link to={item.href}>{item.name}</Link>
                   </Disclosure.Button>
                 ))}
               </div>

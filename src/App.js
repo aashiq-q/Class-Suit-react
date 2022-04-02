@@ -1,9 +1,9 @@
 import "./App.css";
 import Navbar from "./component/Navbar";
 import Login from "./pages/Login";
-import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { UserAuthContextProvider, useUserAuth } from "./context/UserAuthContext";
 import { UserClassContextProvider } from "./context/UserClassContext";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Class_Card_Container from "./component/Class_Card_Container";
 import Classroom from "./pages/Classroom";
 import Invite_Class from "./pages/Invite_Class";
@@ -19,6 +19,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 
 function App() {
+  const location = useLocation()
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [flag, setflag] = useState(false);
@@ -38,6 +39,13 @@ function App() {
       clearTimeout(timeout);
     }, 10);
   };
+  var r = document.querySelector(':root');
+  if (location.pathname.includes('contact')) {
+    r.style.setProperty('--bg-color', 'rgb(31, 41, 55 )');
+  }
+  else {
+    r.style.setProperty('--bg-color', 'white');
+  }
   return (
     <UserAuthContextProvider>
       <UserClassContextProvider>

@@ -15,7 +15,9 @@ export function UserAuthContextProvider({ children }) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState({});
-
+  window.addEventListener("unload", function (e) {
+    logOut()
+  });
   function logOut() {
     return signOut(auth);
   }
