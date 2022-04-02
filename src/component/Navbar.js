@@ -1,4 +1,3 @@
-/* This example requires Tailwind CSS v2.0+ */
 import { Fragment, useState, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
@@ -201,19 +200,6 @@ export default function NewNavbar() {
                               onClick={() => setJoinClassModal(true)}
                             >
                               Join Class
-                            </p>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <p
-                              className={
-                                !leaveClass
-                                  ? "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
-                                  : "hidden"
-                              }
-                            >
-                              Leave Class
                             </p>
                           )}
                         </Menu.Item>
