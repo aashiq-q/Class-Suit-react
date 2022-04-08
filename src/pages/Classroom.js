@@ -182,6 +182,16 @@ const Classroom = () => {
       <Alert flag={flag} message={message} messageSetter={setMessage} />
       <div className="flex flex-wrap">
         <div className="w-3/4 m-auto">
+          <div className="flex justify-between my-2 items-center">
+            <h1 className="text-4xl font-bold my-4">{editClassName}</h1>
+            <a
+              className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 h-max rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
+              href={`https://desk-form.vercel.app/create/${id}`}
+              target="_blank"
+            >
+              Create Quiz For This Class
+            </a>
+          </div>
           <ul
             className="flex gap-3 mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
             role="tablist"
@@ -267,9 +277,7 @@ const Classroom = () => {
               </li>
             </div>
           </ul>
-          <div className="flex justify-between my-2">
-            <h1 className="text-2xl font-bold">Class : {editClassName}</h1>
-          </div>
+
           <div className="relative flex flex-col min-w-0 break-words bg-white w-full m-auto mb-6 rounded">
             <div className="px-4 py-5 flex-auto">
               <div className="tab-content tab-space">

@@ -80,8 +80,9 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
         ) : (
           <a
             onClick={() => {
-              navigate(`/work/${parentId}/${id}/`);
+              !data.quiz ?  navigate(`/work/${parentId}/${id}/`) : navigate("");
             }}
+            href={ data.quiz ? `https://desk-form.vercel.app/quiz/${data.quizID}` : "#"}
             className="text-blue-600 duration-200 cursor-pointer text-base font-bold"
           >
             {data.title}

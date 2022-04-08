@@ -61,6 +61,7 @@ const CreateWork = () => {
         type: "assignment",
         user: user.displayName,
         due: date,
+        quiz: false
       })
         .then(async (docRef) => {
           setdocRefID(docRef.id);
