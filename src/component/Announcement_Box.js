@@ -1,7 +1,7 @@
 import React from "react";
 import { ref, getStorage, listAll, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
-import { collection, query, getDocs } from "firebase/firestore";
+import { collection, query, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase_config";
 
 const Announcement_Box = ({ work, deleteFunc, parentId }) => {
@@ -9,7 +9,20 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
   const storage = getStorage();
   const { data, id } = work;
 
+  console.log(data)
+  async function deleteCollection() {
+    const q = query(collection(db, "QUIZ", `${data.quizID}`, "RESPONSES"));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (doc) => {
+      console.log(doc.id, " => ", doc.data());
+      await deleteDoc(doc("QUIZ", `${data.quizID}`, "RESPONSES", `${doc.id}`));
+    })
+    await deleteDoc(doc("QUIZ", `${data.quizID}`));
+  }
   const handleClick = async () => {
+    if (data.quiz) {
+      deleteCollection()
+    }
     const q = query(
       collection(db, "classes", `${parentId}`, "work", `${id}`, "submissions")
     );
@@ -40,7 +53,7 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
           listAll(listRef)
             .then((res) => {
               res.items.forEach((itemRef) => {
-                const deleteRef = ref(storage,  itemRef.fullPath);
+                const deleteRef = ref(storage, itemRef.fullPath);
                 deleteObject(deleteRef)
                   .then(() => {
                     console.log("file deleted successfully")
@@ -53,11 +66,11 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
             .catch((error) => {
               console.log(error);
             });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
+    });
   };
   return (
     <div className="w-full border-2 rounded-md text-base border-gray-300  mb-4">
@@ -80,9 +93,9 @@ const Announcement_Box = ({ work, deleteFunc, parentId }) => {
         ) : (
           <a
             onClick={() => {
-              !data.quiz ?  navigate(`/work/${parentId}/${id}/`) : navigate("");
+              !data.quiz ? navigate(`/work/${parentId}/${id}/`) : navigate("");
             }}
-            href={ data.quiz ? `https://desk-form.vercel.app/quiz/${data.quizID}` : "#"}
+            href={data.quiz ? `https://desk-form.vercel.app/quiz/${data.quizID}` : "#"}
             className="text-blue-600 duration-200 cursor-pointer text-base font-bold"
           >
             {data.title}

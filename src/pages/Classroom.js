@@ -186,7 +186,7 @@ const Classroom = () => {
             <h1 className="text-4xl font-bold my-4">{editClassName}</h1>
             <a
               className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 h-max rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 mx-2"
-              href={`https://desk-form.vercel.app/create/${id}`}
+              href={`https://desk-form.vercel.app/auth/?redirect=createquiz/${id}`}
               target="_blank"
             >
               Create Quiz For This Class
