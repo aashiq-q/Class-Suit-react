@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: tetris
-          image: aashiqq/classroomapp:latest
+          image: aashiqq/classroommanagement:latest
           ports:
             - containerPort: 3000
 ---
